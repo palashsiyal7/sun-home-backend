@@ -1,0 +1,86 @@
+const mongoose = require("mongoose");
+
+const dailyTimeSheetSchema = new mongoose.Schema({
+  employeeName: String,
+  patientName: String,
+  date: Date,
+  program: String,
+  code: String,
+  totalHours: Number,
+  startTime: String,
+  endTime: String,
+  evvDoneStart: {
+    yes: Boolean,
+    no: Boolean,
+    ifNoReason: String,
+  },
+  evvDoneEnd: {
+    yes: Boolean,
+    no: Boolean,
+    ifNoReason: String,
+  },
+  activities: {
+    turnAndPosition: Boolean,
+    mobilityAssist: Boolean,
+    romExercises: Boolean,
+    ambulationAssist: Boolean,
+  },
+  homemaking: {
+    vacuuming: Boolean,
+    dustDampMop: Boolean,
+    kitchenCleaned: Boolean,
+    dishes: Boolean,
+    bathroom: Boolean,
+    makeChangeBed: Boolean,
+    emptyCommode: Boolean,
+    emptyTrash: Boolean,
+    laundryClientHome: Boolean,
+    laundryLaundromat: Boolean,
+    washStoveTop: Boolean,
+    cleanRefrigerator: Boolean,
+    dust: Boolean,
+    mirrorsWindows: Boolean,
+    errands: Boolean,
+    shopping: Boolean,
+    prescriptionPickup: Boolean,
+    apptAccompany: Boolean,
+    groceryShopping: Boolean,
+    cashReceived: Boolean,
+    cashReturned: Boolean,
+    clientRefusedClientNotHome: Boolean,
+    other: [String], // Assuming multiple 'other' fields can be added
+  },
+  personalCare: {
+    bathShower: Boolean,
+    tubeBed: Boolean,
+    hairCare: Boolean,
+    shampoo: Boolean,
+    shave: Boolean,
+    mouthDentureCare: Boolean,
+    oralCareSwabBrush: Boolean,
+    assistWithDressing: Boolean,
+    lotionSkinBarrier: Boolean,
+    helpWithToileting: Boolean,
+    nailCare: Boolean,
+    washRubBack: Boolean,
+    checkForSkinBreakdown: Boolean,
+  },
+  checkSwelling: {
+    abdomenNone: Boolean,
+    handsFeet: Boolean,
+    legsRightLeft: Boolean,
+  },
+  nutrition: {
+    dietOrder: Boolean,
+    foodAllergies: Boolean,
+    limitEncFluids: Boolean,
+    mealsPreparation: Boolean,
+    feedingServing: Boolean,
+    bloodPressureBloodSugarCheckReminders: Boolean,
+    medicationReminders: Boolean,
+  },
+});
+
+const DailyTimeSheet = mongoose.model("DailyTimeSheet", dailyTimeSheetSchema);
+
+module.exports = DailyTimeSheet;
