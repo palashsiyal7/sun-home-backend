@@ -367,7 +367,7 @@ const employeeSignin = asyncHandler(async (req, res) => {
     }
     // const passwordMatch = await bcrypt.compare(password, employee.password);
     
-    const passwordMatch = employee.password;
+    const passwordMatch = (employee.password === password);
 
     if (!passwordMatch) {
       return res.status(401).json({ error: 'Invalid credentials' });
