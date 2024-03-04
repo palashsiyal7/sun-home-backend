@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "helium-education",
+  "private_key_id": "8dd578ef48ff7e9b589676904a241070e26a463a",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQCwmobWslQuvAqi\nUDPmcOHxNzH+N1yAzkqaCquwpx2V49VQSbd6hQzfLPO/O43U5bslBv5Vttz+oB6b\nOYLHFOXMlywswp0eUyy0WnqYtEvAcyi1s2uCXvThQvA+z/JlztNs45h8QK28NAzR\nXPLzW8Z4/G10UOjJxHaxpExgSpgFzRZvsprWQ1QoX2jC8ecZDlhkeqK4kamd8i/Y\nQrN7VQrsYd3GCc3UqVo6GsCmOJYeC+kWa8OO9U1h5DpfQT4EX8EeDEznwR/5oGOp\nPiNQAW58Y1DpWPhvExxMeQOUs1DskQYf5r0pUquxoQBpA/Z28br8pwRjwBqaIzzm\nJYObtZahAgMBAAECggEAFV64NEtN89Md96LRikVcly4WUZcXYsq+V5eKS7eyf8xw\nUo/TsPK1VQgr0pcn7tGBwirvedBv5ivaqEPe9wIosIdrzrAaB8Je0CV8B6BsON8h\nLPjcveDfAacc9SzVPcviOknsI2pG26ryEMo45958zMUW5ZKo00l/vLfkj2kCA6l9\nFbSvaB66WYoMODpFwV/gQ5hYQhEVYM1QfZClPsnUZuXDLp60ja4cFpoYV3FPX+rP\nBjLGrf8VRyHj+3Eo9JCZgNEnd4q308h21+ly+vjZmPRHmlHaDjdlOE4pvYX1sG4Z\nHjAcQa0VnVt0ET3KzoiAPhDV7p1Awfldi2103Bbw5QKBgQD42aqyx5pXmKKa7dIh\nvQcilauzSCxSlMDHSYOW+kettDJdTtS/8iWB9azVKRVE0UQN+zMuGTAR+L9QDziG\n+Oek+UzvCTfQ9rhvHuj3FhH/fRUyAZgzKuovhikSkg3N1m9ZqLkThExVEEKWQExW\nhUHd+LXz4s896NfCtaZByfyW4wKBgQC1rXlyP40G1vrYaW3eyXDVvBvSqc1bXYKs\nDPCVOLJxkLz0gQC4kGycIEpFyIPNDDDmiJtNrJdn0pRjl8ISNG1AImFrYiP3X5un\nnPMQK9K6YUhFR2inDIZi252/i1WexWR/2sTdI9BgYvIZC+UQdG0if5NoANUp5BGt\nZ5yXY7yPqwKBgQDizuD52VsfA4sQ0jl3bqYWK3w3B0z+Z33dJW++J5c1Bsvwp2zZ\nFYaCELzZ+3vbITB53b4kAekCOEmGWpkWy721a1NnemtZFcW74dxLd94nkoXC8hka\nab7QWeMNffj+5rbObS1iUG6SCSPndesd4I7MFWchRlPFBXfBi3Zg+Aw0KQKBgQCk\nEmBlb0M7dBbiLoSM+LswK0utOrA83PxPyPfUq3lr2lzrKz2tcLDFZtvsnaN6IJJg\n/+nRghbSKnjcYIdhzXsEuofkZKM6mluGSdWxOwJ6U7Ti7BR1GHic+t1ByOGwG3Ah\njz7Ov7NF+NXPDND3xU1yJGjJOkdIJ7JXOgVPK0F1NQKBgQCWDaff9K4NzRSfzbdY\nwFz1nJ9M2diytQkqC4q8LLoBj3X61wfuSYC8p4qJaMPXAH4ZfNfhmbhdWZTRw+LQ\nQ5IBu3beggs8ON+swkx3ExHWO/LjEpAOX7WqaYCRtWhd5uCCC6sLYmDOxn5o98hR\nP+KDY8w2I3hAYnxk1VwCvSwd0g==\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-gu704@helium-education.iam.gserviceaccount.com",
+  "client_id": "105638622066875904946",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-gu704%40helium-education.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
