@@ -1,13 +1,23 @@
 const asyncHandler = require('express-async-handler');
-const DailyTimeSheet = require('../models/DailyTimeSheetHHAModel.js');
+const DailyTimeSheet = require('../../models/CommonFormsModels/DailyTimeSheetHHAModel.js');
 
 // Create a new time sheet
 const createTimeSheet = asyncHandler(async (req, res) => {
-  const timeSheet = new DailyTimeSheet(req.body);
-  
-  const createdTimeSheet = await timeSheet.save();
-  res.status(201).json(createdTimeSheet);
+  try {
+    console.log("first");
+
+    const timeSheet = new DailyTimeSheet(req.body);
+    
+    const createdTimeSheet = await timeSheet.save();
+    res.status(201).json(createdTimeSheet);
+  } catch (error) {
+    // Handle the error appropriately, you can send an error response or log it
+    res.status(500).json({ error: 'An error occurred while creating the time sheet.' });
+    // Optionally, you can also log the error for debugging purposes
+    console.error('Error creating time sheet:', error);
+  }
 });
+
 
 // Get all time sheets
 const getAllTimeSheets = asyncHandler(async (req, res) => {

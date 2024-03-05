@@ -6,14 +6,16 @@ const {
   deleteUnit,
   updateUnitName,
   getUnitById,
-  addProgramsToLocation
+  addProgramsToLocation,
+  updateUnit
 } = require("../controllers/UnitController");
 
 router.route("/").get(getUnits).post(createUnit);
-router.route("/:id").get(getUnitById).put(updateUnitName).delete(deleteUnit);
+router.route("/:id").get(getUnitById).put(updateUnitName).delete(deleteUnit).put(updateUnit);
 router
   .route("/:unitId/programs")
   .post(addProgramsToLocation)
+
 
   /**
  * @swagger

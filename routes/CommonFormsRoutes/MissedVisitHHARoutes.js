@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const {createForm, getAllForms, getFormById, updateFormById, deleteFormById, getMissedFormDataByPatientId} = require('../controllers/missedVisitFormHHAController.js');
+const {createForm, getAllForms, getFormById, updateFormById, deleteFormById, getMissedFormDataByPatientId} = require('../../controllers/CommonFormsController/missedVisitFormHHAController.js');
 
 router.get("/assignment/:id", getMissedFormDataByPatientId)
 // POST route for creating a new missed visit form

@@ -22,29 +22,67 @@ const getLocationById = asyncHandler(async (req, res) => {
 });
 
 // Add new location
+// const createLocation = asyncHandler(async (req, res) => {
+//   console.log("The request body is :", req.body);
+//   const { name } = req.body;
+//   if (!name) {
+//     res.status(400).json(`Location name is required!`);
+//   }
+//   const existingLocation = await Location.findOne({
+//     location_name: name,
+//   });
+
+//   if (existingLocation) {
+//     res.status(400).json(`Location already exists!`);
+//   } else {
+//     const location = await Location.create({
+//       location_name: name,
+//     });
+
+//     res.status(201).json({
+//       message: `Location created successfully`,
+//       location: location,
+//     });
+//   }
+// });
+
 const createLocation = asyncHandler(async (req, res) => {
-  console.log("The request body is :", req.body);
-  const { name } = req.body;
+  const { name, unitIds } = req.body;
+
+  // Validate input
   if (!name) {
-    res.status(400).json(`Location name is required!`);
+    return res.status(400).json({ message: "Location name is required!" });
   }
-  const existingLocation = await Location.findOne({
+  if (!Array.isArray(unitIds) || !unitIds.length) {
+    return res.status(400).json({ message: "Unit IDs are required and must be an array!" });
+  }
+
+  // Check if location already exists
+  const existingLocation = await Location.findOne({ location_name: name });
+  if (existingLocation) {
+    return res.status(400).json({ message: "Location already exists!" });
+  }
+
+  // Verify units exist
+  const units = await Unit.find({ _id: { $in: unitIds } });
+  if (units.length !== unitIds.length) {
+    return res.status(404).json({ message: "One or more units not found" });
+  }
+
+  // Create the location with units
+  const location = new Location({
     location_name: name,
+    units: unitIds,
   });
 
-  if (existingLocation) {
-    res.status(400).json(`Location already exists!`);
-  } else {
-    const location = await Location.create({
-      location_name: name,
-    });
+  await location.save();
 
-    res.status(201).json({
-      message: `Location created successfully`,
-      location: location,
-    });
-  }
+  res.status(201).json({
+    message: "Location created successfully with units",
+    location,
+  });
 });
+
 
 // Update location_name
 const updateLocationName = asyncHandler(async (req, res) => {

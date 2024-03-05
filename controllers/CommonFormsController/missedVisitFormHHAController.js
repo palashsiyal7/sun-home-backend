@@ -1,4 +1,4 @@
-const MissedVisitForm = require('../models/MissedVisitHHAModel');
+const MissedVisitForm = require('../../models/CommonFormsModels/MissedVisitHHAModel');
 const asyncHandler = require("express-async-handler");
 
 const createForm = asyncHandler(async (req, res) => {

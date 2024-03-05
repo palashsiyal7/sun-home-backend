@@ -4,7 +4,7 @@ const Program = require("../models/ProgramModel");
 
 // Get all units
 const getUnits = asyncHandler(async (req, res) => {
-  const units = await Unit.find({}).populate("programs");
+  const units = await Unit.find({}).populate("programs").populate("unit_name");
   res.status(200).json(units);
 });
 
@@ -12,7 +12,8 @@ const getUnits = asyncHandler(async (req, res) => {
 const getUnitById = asyncHandler(async (req, res) => {
   const unitId = req.params.id;
 
-  const unit = await Unit.findById(unitId).populate("programs");
+  const unit = await Unit.findById(unitId).populate("programs").populate("unit_name")
+  // .populate("Company");
 
   if (!unit) {
     res.status(404).json({ error: "Unit not found" });
@@ -75,6 +76,29 @@ const updateUnitName = asyncHandler(async (req, res) => {
     });
   }
 });
+
+const updateUnit = async (req, res) => {
+  const { id } = req.params; // Extract unit ID from URL params
+  const { unit_name, programs } = req.body; // Extract updated data from request body
+
+  try {
+    // Use Mongoose to find the unit by its ID and update its fields
+    const updatedUnit = await Unit.findByIdAndUpdate(
+      id,
+      { unit_name, programs },
+      { new: true } // Return the updated unit
+    );
+
+    if (!updatedUnit) {
+      return res.status(404).json({ message: "Unit not found" });
+    }
+
+    res.status(200).json({ message: "Unit updated successfully", unit: updatedUnit });
+  } catch (error) {
+    console.error("Error updating unit:", error.message);
+    res.status(500).json({ message: "Internal server error" });
+  }
+}
 
 // Delete unit by ID
 const deleteUnit = asyncHandler(async (req, res) => {
@@ -139,4 +163,5 @@ module.exports = {
   updateUnitName,
   getUnitById,
   addProgramsToLocation,
+  updateUnit
 };

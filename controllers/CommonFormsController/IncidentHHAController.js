@@ -1,4 +1,4 @@
-const IncidentHHAForm = require('../models/IncidentHHAModel');
+const IncidentHHAForm = require('../../models/CommonFormsModels/IncidentHHAModel');
 const asyncHandler = require("express-async-handler");
 
 const createForm = asyncHandler(async (req, res) => {
@@ -53,6 +53,7 @@ const getFormByAssignmentId = asyncHandler(async (req, res) => {
 
 
 const updateFormById = asyncHandler(async (req, res) => {
+  console.log('hitttttttttttttttttt');
   try {
     const assignmentId = req.params.id;
     const updatedForm = await IncidentHHAForm.findOneAndUpdate({assignmentId}, req.body, { new: true })

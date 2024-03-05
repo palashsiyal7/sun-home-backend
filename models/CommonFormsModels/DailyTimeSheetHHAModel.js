@@ -50,7 +50,7 @@ const dailyTimeSheetSchema = new mongoose.Schema({
   groceryShopping: Boolean,
   cashReceived: Boolean,
   cashReturned: Boolean,
-  clientRefusedClientNotHome: Boolean,
+  // clientRefusedClientNotHome: Boolean,
   other1: Boolean,
   other2: Boolean,
   other3: Boolean,

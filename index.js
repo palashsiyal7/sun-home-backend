@@ -21,11 +21,21 @@ app.use("/api/timeSlots", require("./routes/TimeSlotRoutes"));
 app.use("/api/employee", require("./routes/EmployeeRoutes"));
 app.use("/api/patients", require("./routes/PatientRoutes"));
 app.use("/api/assign", require("./routes/AssignRoutes"));
-app.use("/api/schedule-hha", require("./routes/ScheduleHHARoutes"));
-app.use("/api/incident-hha", require("./routes//IncidentFormHHARoutes"));
-app.use("/api/missed-visit-hha", require("./routes/MissedVisitHHARoutes"));
-app.use("/api/daily-time-sheet", require("./routes/DailyTimeSheetHHARoutes"));
+app.use("/api/companies", require("./routes/CompanyRoutes"));
 
+//common forms
+app.use("/api/schedule-hha", require("./routes/CommonFormsRoutes/ScheduleHHARoutes.js"));
+app.use("/api/incident-hha", require("./routes/CommonFormsRoutes/IncidentFormHHARoutes.js"));
+app.use("/api/missed-visit-hha", require("./routes/CommonFormsRoutes/MissedVisitHHARoutes.js"));
+app.use("/api/daily-time-sheet", require("./routes/CommonFormsRoutes/DailyTimeSheetHHARoutes.js"));
+
+// nurse form routes 
+app.use("/api/confidential-info-nurse-form", require('./routes/NurseFormsRoutes/ConfidentialInfoRoutes.js'))
+app.use("/api/noticeOfLimitOfScope", require('./routes/NurseFormsRoutes/NoticeOfLimitOfScope.js'))
+app.use("/api/clientbillrights", require('./routes/NurseFormsRoutes/ClientBillOfRightsRoutes.js'))
+app.use("/api/patientprior", require('./routes/NurseFormsRoutes/PatientPrioritizationRoutes.js'))
+app.use("/api/policies", require('./routes/NurseFormsRoutes/PolicyOnConfidentialityRoutes.js'))
+app.use('/api/privacy-practices-receipt',require('./routes/NurseFormsRoutes/RecieptOfNoticeRoutes.js'))
 // Serve Swagger UI
 app.use('/api', swaggerUI.serve, swaggerUI.setup(swaggerSpec));
 app.use(errorHandler);

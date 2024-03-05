@@ -7,7 +7,7 @@ const {
   getFormByAssignmentId,
   updateFormById,
   deleteFormById
-} = require('../controllers/IncidentHHAController'); // Adjust the path according to your project structure
+} = require('../../controllers/CommonFormsController/IncidentHHAController'); // Adjust the path according to your project structure
 
 // Route to create a new PCA schedule
 router.post('/', createForm);

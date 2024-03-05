@@ -1,5 +1,5 @@
 const asyncHandler = require('express-async-handler');
-const Schedule = require('../models/ScheduleHHAModel');
+const Schedule = require('../../models/CommonFormsModels/ScheduleHHAModel');
 
 // Create a new PCA schedule
 const createSchedule = asyncHandler(async (req, res) => {
@@ -117,6 +117,7 @@ const deleteSchedule = asyncHandler(async (req, res) => {
 // get schedule form data by assignmentId
 const getScheduleByAssignmentId = asyncHandler(async (req, res) => {
   try {
+    console.log("hitttt");
     const assignmentId = req.params.id;  // Assuming the assignmentId is passed in the URL parameter
     const schedule = await Schedule.findOne({ assignmentId });
 

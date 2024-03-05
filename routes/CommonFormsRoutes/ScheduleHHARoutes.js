@@ -7,7 +7,7 @@ const {
   updateSchedule,
   deleteSchedule,
   getScheduleByAssignmentId,
-} = require('../controllers/ScheduleHHAController'); // Adjust the path according to your project structure
+} = require('../../controllers/CommonFormsController/ScheduleHHAController'); // Adjust the path according to your project structure
 
 router.get("/assignment/:id", getScheduleByAssignmentId)
 // Route to create a new PCA schedule

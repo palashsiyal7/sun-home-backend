@@ -52,6 +52,7 @@ const createAssignment = async (req, res) => {
 // @route PATCH /assignments/:id
 // @access Private
 const updateAssignment = async (req, res) => {
+  console.log('api hit');
   try {
     const assignment = await Assignment.findById(req.params.id);
 
@@ -102,7 +103,7 @@ const getAssignments = asyncHandler(async (req, res) => {
 const getAssignmentById = async (req, res) => {
   const assignment = await Assignment.findById(req.params.id)
     .populate("patient", "patient_name dob address image code")
-    .populate("employee", "name role phoneNumber email")
+    .populate("employee", "name role phoneNumber email ready_to_work_extra_hours")
     .populate("timeSlot", "timeSlot_name");
 
   if (!assignment) {
@@ -232,12 +233,13 @@ const existingAssignments = async (req, res) => {
 
 const patientStatus = async (req, res) => {
   try {
-    const { assignmentId, patientStatus } = req.body;
+    console.log('hit');
+    const { assignmentId, patientStatus, commentForRejection } = req.body;
 
     // Update assignment status
     const assignment = await Assignment.findByIdAndUpdate(
       assignmentId,
-      { patientStatus },
+      { patientStatus,commentForRejection },
       { new: true } // Return the updated document
     ).populate('patient timeSlot');
 
@@ -258,7 +260,11 @@ const patientStatus = async (req, res) => {
       return res.status(200).json(patientInfo);
     } else if (patientStatus === 'rejected') {
       // Handle rejected status
-      return res.status(200).json('Employee not available');
+      return res.status(200).json('Employee is not available: rejected');
+    
+    } else if (patientStatus === 'pending') {
+      // Handle rejected status
+      return res.status(200).json('pending');
     } else {
       return res.status(400).json('Invalid status');
     }

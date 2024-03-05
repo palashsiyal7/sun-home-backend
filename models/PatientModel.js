@@ -79,10 +79,10 @@ const PatientSchema = mongoose.Schema(
     //   type: String,
     //   required: [true, `Please add the case Mgr fax no.`],
     // },
-    // caseMgrEmail: {
-    //   type: String,
-    //   required: [true, `Please add the case Mgr email address`],
-    // },
+    caseMgrEmail: {
+      type: String,
+      required: [false, `Please add the case Mgr email address`],
+    },
     doctorName: { //physician
       type: String,
       required: [true, `Please add the doctor's name`],

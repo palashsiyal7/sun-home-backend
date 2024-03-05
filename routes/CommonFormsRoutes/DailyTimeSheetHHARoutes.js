@@ -6,7 +6,7 @@ const {
   getTimeSheetById,
   updateTimeSheet,
   deleteTimeSheet
-} = require('../controllers/DailyTimeSheetHHAController');
+} = require('../../controllers/CommonFormsController/DailyTimeSheetHHAController');
 
 // Route to create a new time sheet
 router.post('/', createTimeSheet);

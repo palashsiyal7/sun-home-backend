@@ -30,10 +30,50 @@ const getPatients = asyncHandler(async (req, res) => {
 
 
 // Get patient by Id
+// const getPatientById = asyncHandler(async (req, res) => {
+//   const patientId = req.params.id;
+
+//   const patient = await Patient.findById(patientId);
+
+//   if (!patient) {
+//     res.status(404).json({ error: "Patient not found" });
+//   } else {
+//     res.status(200).json(patient);
+//   }
+// });
+
 const getPatientById = asyncHandler(async (req, res) => {
   const patientId = req.params.id;
 
-  const patient = await Patient.findById(patientId);
+  const patient = await Patient.findById(patientId, {
+    _id: 1,
+    patient_name: 1,
+    ss: 1,
+    mcr: 1,
+    mcd: 1,
+    specialRequest: 1,
+    dob: 1,
+    city: 1,
+    state: 1,
+    zip: 1,
+    phoneNumber: 1,
+    address: 1,
+    relativeNameFirst: 1,
+    relativeContactFirst: 1,
+    caseMgrName: 1,
+    caseMgrPhone: 1,
+    doctorName: 1,
+    npi: 1,
+    doctorPhone: 1,
+    doctorAddress: 1,
+    doctorCity: 1,
+    doctorState: 1,
+    doctorZip: 1,
+    daysNeeded: 1,
+    timeSlots: 1,
+    programs: 1,
+    code: 1
+  });
 
   if (!patient) {
     res.status(404).json({ error: "Patient not found" });
@@ -387,6 +427,7 @@ const createPatient = async (req, res) => {
       relativeContactFirst,
       caseMgrName,
       caseMgrPhone,
+      caseMgrEmail,
       doctorName,
       npi,
       doctorPhone,
@@ -540,6 +581,7 @@ const createPatient = async (req, res) => {
       relativeContactFirst,
       caseMgrName,
       caseMgrPhone,
+      caseMgrEmail,
       doctorName,
       npi,
       doctorPhone,

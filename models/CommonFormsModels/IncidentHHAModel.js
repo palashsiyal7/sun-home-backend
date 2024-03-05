@@ -263,8 +263,12 @@ const incidentHHAFormSchema = mongoose.Schema({
   signatureOfManager: String,
   signatureDate2: String,
 
-  signatureOfDirectot: String,
+  signatureOfDirector: String,
   signatureDate3: String,
+
+  signature1Time: String,
+  signature2Time: String,
+  signature3Time: String,
 
   // added fields
   employeeName:String,

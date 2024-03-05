@@ -14,6 +14,7 @@ const {
 
 // POST /api/assignments
 router.post("/", createAssignment);
+
 router.post("/patient-status", patientStatus);
 
 router.get("/exist", existingAssignments)
