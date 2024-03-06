@@ -68,7 +68,8 @@ const deleteBillOfRights = asyncHandler(async (req, res) => {
     const billOfRights = await ClientBillOfRights.findById(req.params.id);
 
     if (billOfRights) {
-      await billOfRights.remove();
+      // await billOfRights.remove();
+      await billOfRights.deleteOne({_id: req.params.id});
       res.status(200).json({ message: "Bill of Rights removed" });
     } else {
       res.status(404).json({ message: "Bill of Rights not found" });

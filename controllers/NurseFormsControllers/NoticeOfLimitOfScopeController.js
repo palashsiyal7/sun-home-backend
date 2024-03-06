@@ -4,11 +4,11 @@ const noticeOfLimitOfScope = require("../../models/NurseFormsModels/NoticeOfLimi
 // Create Confidential Info
 const createForm = asyncHandler(async (req, res) => {
     try {
-      const { assignmentId, patientSignature, patientDate } = req.body;
+      const { assignmentId, patientSignature, date } = req.body;
       const notice = new noticeOfLimitOfScope({
         assignmentId,
         patientSignature,
-        patientDate,
+        date,
       });
   
       const createdNotice = await notice.save();
@@ -47,7 +47,7 @@ const updateForm = asyncHandler(async (req, res) => {
   
       if (notice) {
         notice.patientSignature = req.body.patientSignature || notice.patientSignature;
-        notice.patientDate = req.body.patientDate || notice.patientDate;
+        notice.date = req.body.date || notice.date;
   
         const updatedNotice = await notice.save();
         res.status(200).json(updatedNotice);
@@ -65,7 +65,7 @@ const deleteForm = asyncHandler(async (req, res) => {
     const noticeFormInfo = await noticeOfLimitOfScope.findById(req.params.id);
 
     if (noticeFormInfo) {
-      await noticeFormInfo.remove();
+      await noticeFormInfo.deleteOne({_id: req.params._id});
       res.status(200).json({ message: "Confidential info removed" });
     } else {
       res.status(404).json({ message: "Confidential info not found" });
@@ -127,7 +127,7 @@ const deleteFormByAssignmentId = asyncHandler(async (req, res) => {
     });
 
     if (noticeFormInfo) {
-      await noticeFormInfo.remove();
+      await noticeFormInfo.deleteOne({assignmentId: req.params.assignmentId});
       res
         .status(200)
         .json({ message: "Confidential info with given assignmentId removed" });

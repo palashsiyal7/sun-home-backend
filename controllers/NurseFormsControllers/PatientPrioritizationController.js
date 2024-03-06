@@ -74,7 +74,8 @@ const deletePatientPrioritization = asyncHandler(async (req, res) => {
     const patientPrioritization = await PatientPrioritization.findById(req.params.id);
 
     if (patientPrioritization) {
-      await patientPrioritization.remove();
+      // await patientPrioritization.remove();
+      await patientPrioritization.deleteOne({_id: req.params.id});
       res.status(200).json({ message: "Patient prioritization removed" });
     } else {
       res.status(404).json({ message: "Patient prioritization not found" });

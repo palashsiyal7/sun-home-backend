@@ -67,7 +67,8 @@ exports.deleteCompany = asyncHandler(async (req, res) => {
   const company = await Company.findById(req.params.id);
 
   if (company) {
-    await company.remove();
+    await company.deleteOne({_id: req.params.id});
+    // await company.remove();
     res.json({ message: 'Company removed' });
   } else {
     res.status(404);

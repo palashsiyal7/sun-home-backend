@@ -86,7 +86,9 @@ const deleteForm = asyncHandler(async (req, res) => {
     const confidentialInfo = await ConfidentialInfo.findById(req.params.id);
 
     if (confidentialInfo) {
-      await confidentialInfo.remove();
+      // await confidentialInfo.remove();
+      await confidentialInfo.deleteOne({_id: req.params.id});
+
       res.status(200).json({ message: "Confidential info removed" });
     } else {
       res.status(404).json({ message: "Confidential info not found" });
@@ -119,7 +121,7 @@ const getFormByAssignmentId = asyncHandler(async (req, res) => {
 const updateFormByAssignmentId = asyncHandler(async (req, res) => {
   try {
     const assignmentId  = req.params.id;
-    console.log("api hit");
+    console.log("updateFormByAssignmentId-confidential-info-Controller api hit");
     console.log(req.body);
 
     const confidentialForm = await ConfidentialInfo.findOne({assignmentId})
@@ -148,7 +150,8 @@ const deleteFormByAssignmentId = asyncHandler(async (req, res) => {
     });
 
     if (confidentialInfo) {
-      await confidentialInfo.remove();
+      await confidentialInfo.deleteOne({assignmentId: req.params.assignmentId});
+      // await confidentialInfo.remove();
       res
         .status(200)
         .json({ message: "Confidential info with given assignmentId removed" });

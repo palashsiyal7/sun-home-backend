@@ -68,9 +68,10 @@ const createPolicy = asyncHandler(async (req, res) => {
   const deletePolicy = asyncHandler(async (req, res) => {
     try {
       const policy = await PolicyOnConfidentiality.findById(req.params.id);
-  
+
+  // await Patient.deleteOne({ _id: patientId });
       if (policy) {
-        await policy.remove();
+        await policy.deleteOne({_id: req.params.id});
         res.status(200).json({ message: "Policy on confidentiality removed" });
       } else {
         res.status(404).json({ message: "Policy on confidentiality not found" });

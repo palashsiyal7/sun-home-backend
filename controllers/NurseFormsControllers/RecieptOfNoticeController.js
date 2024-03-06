@@ -88,9 +88,9 @@ const updateReceipt = asyncHandler(async (req, res) => {
 const deleteReceipt = asyncHandler(async (req, res) => {
   try {
     const receipt = await PrivacyPracticesReceipt.findById(req.params.id);
-
     if (receipt) {
-      await receipt.remove();
+      // await receipt.remove();
+      await receipt.deleteOne({_id: req.params._id});
       res.status(200).json({ message: "Receipt removed" });
     } else {
       res.status(404).json({ message: "Receipt not found" });
@@ -106,7 +106,6 @@ const getReceiptByAssignmentId = asyncHandler(async (req, res) => {
       const receipt = await PrivacyPracticesReceipt.findOne({
         assignmentId: req.params.assignmentId,
       });
-  
       if (receipt) {
         res.status(200).json(receipt);
       } else {

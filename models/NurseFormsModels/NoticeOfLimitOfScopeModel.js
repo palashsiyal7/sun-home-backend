@@ -10,7 +10,7 @@ const noticeOfLimitOfScopeSchema = new mongoose.Schema({
     type: String,
     required: [true, "Patient signature is required"],
   },
-  patientDate: {
+  date: {
     type: Date,
     required: [true, "Date of patient signature is required"],
   },

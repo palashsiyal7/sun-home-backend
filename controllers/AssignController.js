@@ -88,7 +88,7 @@ const updateAssignment = async (req, res) => {
 const getAssignments = asyncHandler(async (req, res) => {
   const assignments = await Assignment.find()
     .populate("patient", "patient_name dob address image code")
-    .populate("employee", "name role phoneNumber email")
+    .populate("employee", "name role phoneNumber email ready_to_work_extra_hours")
     .populate("timeSlot", "timeSlot_name");
 
     if (!assignments) {

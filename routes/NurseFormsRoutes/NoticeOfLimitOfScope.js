@@ -15,7 +15,7 @@ const {
 router.post("/", createForm);
 router.get("/", getAllForms);
 router.get('/assignment/:assignmentId', getFormByAssignmentId )
-router.put("/:assignmentId", updateFormByAssignmentId);
+router.put("/assignment/:assignmentId", updateFormByAssignmentId);
 router.delete("/:assignmentId", deleteFormByAssignmentId);
 
 // for postman testing only
