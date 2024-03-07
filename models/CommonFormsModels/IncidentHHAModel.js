@@ -10,7 +10,7 @@ const incidentHHAFormSchema = mongoose.Schema({
   },
 
   //page 1
-  patientName: {
+  reportedTo: {
     type: String,
     // required: [true, "Missing field patientName "],
   },
@@ -58,7 +58,7 @@ const incidentHHAFormSchema = mongoose.Schema({
     // required: [true, "Missing field ifEmployeeIncident"],
   },
   employeeSentERMD: Boolean,
-  detailsIfYes: Boolean,
+  detailsIfYes: String,
 
   // Section 2
   patientOrEmployeeName: {

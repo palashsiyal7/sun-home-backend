@@ -19,6 +19,7 @@ exports.createCompany = asyncHandler(async (req, res) => {
     res.status(201).json({
       _id: company.id,
       company_name: company.company_name,
+      message: "Successfully created new company"
     });
   } else {
     res.status(400);
@@ -55,6 +56,7 @@ exports.updateCompany = asyncHandler(async (req, res) => {
     res.json({
       _id: updatedCompany._id,
       company_name: updatedCompany.company_name,
+      message:"Company Updated successfully"
     });
   } else {
     res.status(404);

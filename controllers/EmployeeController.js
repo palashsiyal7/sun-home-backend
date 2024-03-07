@@ -499,7 +499,8 @@ const employeeSignin = asyncHandler(async (req, res) => {
       employee: {
         id: employee._id,
         email: employee.email,
-        units: employee.units // Include the units information in the response
+        units: employee.units,
+        role:  employee.role,// Include the units information in the response
       },
     });
   } catch (error) {

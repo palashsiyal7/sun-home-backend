@@ -45,35 +45,40 @@ const getPatients = asyncHandler(async (req, res) => {
 const getPatientById = asyncHandler(async (req, res) => {
   const patientId = req.params.id;
 
-  const patient = await Patient.findById(patientId, {
-    _id: 1,
-    patient_name: 1,
-    ss: 1,
-    mcr: 1,
-    mcd: 1,
-    specialRequest: 1,
-    dob: 1,
-    city: 1,
-    state: 1,
-    zip: 1,
-    phoneNumber: 1,
-    address: 1,
-    relativeNameFirst: 1,
-    relativeContactFirst: 1,
-    caseMgrName: 1,
-    caseMgrPhone: 1,
-    doctorName: 1,
-    npi: 1,
-    doctorPhone: 1,
-    doctorAddress: 1,
-    doctorCity: 1,
-    doctorState: 1,
-    doctorZip: 1,
-    daysNeeded: 1,
-    timeSlots: 1,
-    programs: 1,
-    code: 1
-  });
+  const patient = await Patient.findById(patientId)
+    .select({
+      _id: 1,
+      patient_name: 1,
+      ss: 1,
+      mcr: 1,
+      mcd: 1,
+      specialRequest: 1,
+      dob: 1,
+      city: 1,
+      state: 1,
+      zip: 1,
+      phoneNumber: 1,
+      address: 1,
+      relativeNameFirst: 1,
+      relativeContactFirst: 1,
+      caseMgrName: 1,
+      caseMgrPhone: 1,
+      caseMgrEmail: 1,
+      doctorName: 1,
+      npi: 1,
+      doctorPhone: 1,
+      doctorAddress: 1,
+      doctorCity: 1,
+      doctorState: 1,
+      doctorZip: 1,
+      daysNeeded: 1,
+      timeSlots: 1,
+      programs: 1,
+      code: 1,
+      image: 1
+    })
+    .populate('timeSlots') // Assuming 'timeSlots' is the correct field name in your Patient model
+    .populate('programs'); // Assuming 'programs' is the correct field name in your Patient model
 
   if (!patient) {
     res.status(404).json({ error: "Patient not found" });
@@ -81,6 +86,7 @@ const getPatientById = asyncHandler(async (req, res) => {
     res.status(200).json(patient);
   }
 });
+
 
 // Add new patient
 // const createPatient = asyncHandler(async (req, res) => {
@@ -717,11 +723,11 @@ const createPatient = async (req, res) => {
     });
 
       // Check if phoneNumber is already in use
-  const existingContactNo = await Patient.findOne({ phoneNumber });
-  if (existingContactNo) {
-    res.status(422).json({ error: "Contact Number already in use" });
-    return;
-  }
+  // const existingContactNo = await Patient.findOne({ phoneNumber });
+  // if (existingContactNo) {
+  //   res.status(422).json({ error: "Contact Number already in use" });
+  //   return;
+  // }
 
     const savedPatient = await newPatient.save();
     res.status(201).json(savedPatient);

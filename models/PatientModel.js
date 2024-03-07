@@ -4,21 +4,21 @@ const PatientSchema = mongoose.Schema(
   {
     patient_name: {
       type: String,
-      required: [true, `Please add the nurse name`],
+      required: [false, `Please add the nurse name`],
     },
     ss: {
       type: String,
-      required: [true, 'Please add the Social Security Number'],
+      required: [false, 'Please add the Social Security Number'],
       // match: [/^\d{3}-\d{2}-\d{4}$/, 'Please add a valid Social Security Number (e.g., 123-45-6789)']
     },
     mcr: {
       type: String,
-      required: [true, 'Please add the Medicare Number'],
+      required: [false, 'Please add the Medicare Number'],
       // Add any specific validation for Medicare Number if required
     },
     mcd: {
       type: String,
-      required: [true, 'Please add the Medicaid Number'],
+      required: [false, 'Please add the Medicaid Number'],
       // Add any specific validation for Medicaid Number if required
     },
     specialRequest: {
@@ -27,57 +27,57 @@ const PatientSchema = mongoose.Schema(
     },
     dob: {
       type: String,
-      required: [true, `Please add the dob`],
+      required: [false, `Please add the dob`],
     },
     city:{
       type: String,
-      required: [true, `Please add the city`],
+      required: [false, `Please add the city`],
     },
 
     state:{
       type: String,
-      required: [true, `Please add the state`],
+      required: [false, `Please add the state`],
     },
     zip:{
       type: String,
-      required: [true, `Please add the zip`],
+      required: [false, `Please add the zip`],
     },
     phoneNumber: {
       type: String,
-      unique: [true, "Phone number already exists"],
-      required: [true, `Please add the contact no.`],
+      // unique: [false, "Phone number already exists"],
+      required: [false, `Please add the contact no.`],
     },
     address: {
       type: String,
-      required: [true, `Please add the address`],
+      required: [false, `Please add the address`],
     },
     relativeNameFirst: { //emergency contact
       type: String,
-      required: [true, `Please add the relative 1 name`],
+      required: [false, `Please add the relative 1 name`],
     },
     relativeContactFirst: { //emergency contact number
       type: String,
-      // required: [true, `Please add the relative 1 contact no.`],
+      // required: [false, `Please add the relative 1 contact no.`],
     },
     // relativeNameSecond: {
     //   type: String,
-    //   required: [true, `Please add the relative 2 name`],
+    //   required: [false, `Please add the relative 2 name`],
     // },
     // relativeContactSecond: {
     //   type: String,
-    //   required: [true, `Please add the relative 2 contact no.`],
+    //   required: [false, `Please add the relative 2 contact no.`],
     // },
     caseMgrName: {
       type: String,
-      required: [true, `Please add the case Mgr name.`],
+      required: [false, `Please add the case Mgr name.`],
     },
     caseMgrPhone: {
       type: String,
-      required: [true, `Please add the case Mgr contact no.`],
+      required: [false, `Please add the case Mgr contact no.`],
     },
     // caseMgrFax: {
     //   type: String,
-    //   required: [true, `Please add the case Mgr fax no.`],
+    //   required: [false, `Please add the case Mgr fax no.`],
     // },
     caseMgrEmail: {
       type: String,
@@ -85,36 +85,36 @@ const PatientSchema = mongoose.Schema(
     },
     doctorName: { //physician
       type: String,
-      required: [true, `Please add the doctor's name`],
+      required: [false, `Please add the doctor's name`],
     },
     npi:{
       type: Number,
-      required: [true, `Please add the doctor's NPI`],
+      required: [false, `Please add the doctor's NPI`],
     },
     doctorPhone: {
       type: String,
-      required: [true, `Please add the case doctor's contact no.`],
+      required: [false, `Please add the case doctor's contact no.`],
     },
     doctorAddress: { //changed fax to address
       type: String,
-      required: [true, `Please add the case doctor's fax no.`],
+      required: [false, `Please add the case doctor's fax no.`],
     },
     doctorCity:{
       type: String,
-      required: [true, `Please add the case doctor's city.`],
+      required: [false, `Please add the case doctor's city.`],
     },
     doctorState:{
       type: String,
-      required: [true, `Please add the case doctor's state.`],
+      required: [false, `Please add the case doctor's state.`],
     },
     doctorZip:{
       type: String,
-      required: [true, `Please add the case doctor's zip.`],
+      required: [false, `Please add the case doctor's zip.`],
     },
     daysNeeded: {
       type: [String],
       default: [],
-      required: [true, `Must have atleast one day inside availability array`],
+      required: [false, `Must have atleast one day inside availability array`],
     },
     timeSlots: [
       {
@@ -612,7 +612,7 @@ const PatientSchema = mongoose.Schema(
     },
   },
   {
-    timestamps: true,
+    timestamps: false,
   }
 );
 

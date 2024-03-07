@@ -101,17 +101,26 @@ const getAssignments = asyncHandler(async (req, res) => {
 // @route    GET /api/assignments/:id
 // @access   Private
 const getAssignmentById = async (req, res) => {
-  const assignment = await Assignment.findById(req.params.id)
-    .populate("patient", "patient_name dob address image code")
-    .populate("employee", "name role phoneNumber email ready_to_work_extra_hours")
-    .populate("timeSlot", "timeSlot_name");
+  try {
+    const assignment = await Assignment.findById(req.params.id)
+      .populate("patient", "patient_name dob address image code")
+      .populate("employee", "name role phoneNumber email ready_to_work_extra_hours")
+      .populate("timeSlot", "timeSlot_name");
 
-  if (!assignment) {
-    throw new Error("Assignment not found");
+    if (!assignment) {
+      // Respond with a 404 status code if the assignment is not found
+      return res.status(404).json({ message: "Assignment not found" });
+    }
+
+    res.json(assignment);
+  } catch (error) {
+    // Log the error or handle it as necessary
+    console.error("Error fetching assignment:", error.message);
+    // Respond with a 500 status code indicating a server error
+    res.status(500).json({ message: "Failed to fetch assignment" });
   }
-
-  res.json(assignment);
 };
+
 
 // @desc     Delete Assignment
 // @route    DELETE /api/assignments/:id
