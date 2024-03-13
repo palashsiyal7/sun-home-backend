@@ -1,22 +1,47 @@
 const asyncHandler = require('express-async-handler');
 const DailyTimeSheet = require('../../models/CommonFormsModels/DailyTimeSheetHHAModel.js');
 
-// Create a new time sheet
 const createTimeSheet = asyncHandler(async (req, res) => {
   try {
     console.log("first");
 
-    const timeSheet = new DailyTimeSheet(req.body);
-    
+    // Function to convert time format from "2:59 PM" to "14:59"
+    const convertTime12to24 = (time12h) => {
+      const [time, modifier] = time12h.split(' ');
+      let [hours, minutes] = time.split(':');
+
+      if (hours === '12') {
+        hours = '00';
+      }
+
+      if (modifier === 'PM') {
+        hours = parseInt(hours, 10) + 12;
+      }
+
+      return `${hours}:${minutes}`;
+    };
+
+    // Convert startTime and endTime from req.body
+    const convertedStartTime = convertTime12to24(req.body.startTime);
+    const convertedEndTime = convertTime12to24(req.body.endTime);
+
+    // Create a new DailyTimeSheet with converted times
+    const timeSheet = new DailyTimeSheet({
+      ...req.body,
+      startTime: convertedStartTime,
+      endTime: convertedEndTime,
+    });
+
     const createdTimeSheet = await timeSheet.save();
     res.status(201).json(createdTimeSheet);
   } catch (error) {
-    // Handle the error appropriately, you can send an error response or log it
     res.status(500).json({ error: 'An error occurred while creating the time sheet.' });
-    // Optionally, you can also log the error for debugging purposes
     console.error('Error creating time sheet:', error);
   }
 });
+
+module.exports = { createTimeSheet };
+
 
 
 // Get all time sheets
@@ -29,12 +54,10 @@ const getAllTimeSheets = asyncHandler(async (req, res) => {
 const getTimeSheetById = asyncHandler(async (req, res) => {
   const assignmentId = req.params.id;
   const timeSheet = await DailyTimeSheet.findOne({assignmentId});
-
   if (!timeSheet) {
     res.status(404);
     throw new Error('Time sheet not found');
   }
-
   res.status(200).json(timeSheet);
 });
 

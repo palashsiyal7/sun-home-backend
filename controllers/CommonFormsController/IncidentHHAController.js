@@ -12,7 +12,7 @@ const createForm = asyncHandler(async (req, res) => {
 
 const getAllForms = asyncHandler(async (req, res) => {
   try {
-    const forms = await IncidentHHAForm.find().populate('patientId');
+    const forms = await IncidentHHAForm.find();
     res.status(200).json(forms);
   } catch (error) {
     res.status(500).json({ message: error.message });

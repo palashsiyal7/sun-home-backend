@@ -121,6 +121,7 @@ const getReceiptByAssignmentId = asyncHandler(async (req, res) => {
     try {
       const { assignmentId } = req.params;
       const updateData = req.body;
+      console.log(req.body);
   
       const updatedReceipt = await PrivacyPracticesReceipt.findOneAndUpdate(
         { assignmentId },

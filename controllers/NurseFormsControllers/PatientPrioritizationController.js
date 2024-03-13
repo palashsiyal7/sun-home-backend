@@ -15,7 +15,7 @@ const createPatientPrioritization = asyncHandler(async (req, res) => {
     });
 
     const createdPatientPrioritization = await patientPrioritization.save();
-    res.status(201).json(createdPatientPrioritization);
+    res.status(200).json(createdPatientPrioritization);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

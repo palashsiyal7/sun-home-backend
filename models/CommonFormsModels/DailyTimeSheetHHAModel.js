@@ -52,7 +52,7 @@ const dailyTimeSheetSchema = new mongoose.Schema({
   cashReturned: Boolean,
   // clientRefusedClientNotHome: Boolean,
   other1: Boolean,
-  other2: Boolean,
+  // other2: Boolean,
   other3: Boolean,
 
   // personalCare:
@@ -84,7 +84,7 @@ const dailyTimeSheetSchema = new mongoose.Schema({
   feedingServing: Boolean,
   bloodPressureBloodSugarCheckReminders: Boolean,
   medicationReminders: Boolean,
-  other: Boolean,
+  // other: Boolean,
 
   //signatures
   employeesSignature: String,

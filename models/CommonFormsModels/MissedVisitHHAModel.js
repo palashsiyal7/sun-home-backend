@@ -55,6 +55,14 @@ const missedVisitFormSchema = mongoose.Schema({
   shiftVisitRescheduledFor: Date,
   careCoordinatorName: String,
   careCoordinatorDate: Date,
+
+  faxedCheck: Boolean,
+  patientTelCheck: Boolean,
+  emailCheck: Boolean,
+  homeHealthAideCheck: Boolean,
+  shiftVisitRescheduledToCheck: Boolean,
+  shiftVisitRescheduledForCheck: Boolean
+
 });
 
 // Create model
