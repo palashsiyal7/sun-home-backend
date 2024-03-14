@@ -9,7 +9,7 @@ const dailyTimeSheetSchema = new mongoose.Schema({
   employeeName: String,
   date: Date,
   day: String,
-  totalHours: Number,
+  totalHours: String,
   patientName: String,
   code: String,
   program: String,

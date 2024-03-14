@@ -4,7 +4,6 @@ const ScheduleSchema = new mongoose.Schema({
   assignmentId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Assignment",
-    // required: true,
   },
   patientId: String,
   clientName: String,
@@ -18,7 +17,7 @@ const ScheduleSchema = new mongoose.Schema({
     friday: { startTime: String, endTime: String },
     saturday: { startTime: String, endTime: String },
   },
-  totalHours: Number,
+  totalHours: String,
 });
 
 const PCASchedule = mongoose.model('Schedule', ScheduleSchema);

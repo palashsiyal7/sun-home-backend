@@ -12,7 +12,7 @@ const clientBillOfRightsSchema = new mongoose.Schema({
   },
   dateSigned: {
     type: Date,
-    default: Date.now,
+    // default: Date.now,
   },
 });
 

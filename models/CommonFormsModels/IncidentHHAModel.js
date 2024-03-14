@@ -19,7 +19,7 @@ const incidentHHAFormSchema = mongoose.Schema({
     // required: [true, "Missing field incidentLocation"],
   },
   incidentDate: {
-    type: String,
+    type: Date,
     // required: [true, "Missing field incidentDate"],
   },
   incidentTime: {
@@ -29,7 +29,7 @@ const incidentHHAFormSchema = mongoose.Schema({
 
   //section 1
   incidentDate1: {
-    type: String,
+    type: Date,
     // required: [true, "Missing field incidentDate1"],
   },
   incidentTime1: {
@@ -38,7 +38,7 @@ const incidentHHAFormSchema = mongoose.Schema({
   },
   //reported
   incidentReportedDate: {
-    type: String,
+    type: Date,
     // required: [true, "Missing field incidentReportedDate"],
   },
   incidentReportedToPerson: {
@@ -254,17 +254,17 @@ const incidentHHAFormSchema = mongoose.Schema({
 
   //page 4
   personResponsibleToImplementation: String,
-  DateCorrectiveActions: String,
+  DateCorrectiveActions: Date,
 
   //signatures
   signatureOfPersonCompletingForm: String,
-  signatureDate1: String,
+  signatureDate1: Date,
 
   signatureOfManager: String,
-  signatureDate2: String,
+  signatureDate2: Date,
 
   signatureOfDirector: String,
-  signatureDate3: String,
+  signatureDate3: Date,
 
   signature1Time: String,
   signature2Time: String,

@@ -1,16 +1,24 @@
 const asyncHandler = require('express-async-handler');
 const Schedule = require('../../models/CommonFormsModels/ScheduleHHAModel');
+const formatDate = require('../../utils/formatDate');
 
 // Create a new PCA schedule
 const createSchedule = asyncHandler(async (req, res) => {
   try {
-    const schedule = new Schedule(req.body);
+    const formattedBody = { ...req.body };
+    ['weekStartingDate'].forEach(field => {
+      if (formattedBody[field]) {
+        formattedBody[field] = formatDate(formattedBody[field]);
+      }
+    });
+    const schedule = new Schedule(formattedBody);
     const createdSchedule = await schedule.save();
     res.status(200).json(createdSchedule);
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
 });
+// weekStartingDate
 
 // Get all PCA schedules
 const getAllSchedules = asyncHandler(async (req, res) => {

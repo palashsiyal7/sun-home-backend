@@ -10,6 +10,7 @@ const {
   getFilteredAssignments,
   existingAssignments,
   patientStatus,
+  getAssignmentsByEIdAndDate,
 } = require("../controllers/AssignController.js");
 
 // POST /api/assignments
@@ -24,6 +25,9 @@ router.get("/", getAssignments);
 
 // GET filtered date and assignedToModel = /api/assignments
 router.get("/category/", getFilteredAssignments);
+
+// for mobile developers mobile view based on employee login
+router.get('/employeeAssignments/',getAssignmentsByEIdAndDate)
 
 // GET /api/assignments/:id
 router.get("/:id", getAssignmentById);

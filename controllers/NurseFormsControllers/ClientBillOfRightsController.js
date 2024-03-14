@@ -1,15 +1,20 @@
 const asyncHandler = require("express-async-handler");
 const ClientBillOfRights = require("../../models/NurseFormsModels/ClientBillOfRightsModel");
+const formatDate = require("../../utils/formatDate");
 
 // Create Client Bill Of Rights
 const createBillOfRights = asyncHandler(async (req, res) => {
   try {
-    const { assignmentId, signature, dateSigned } = req.body;
-    const billOfRights = new ClientBillOfRights({
-      assignmentId,
-      signature,
-      dateSigned,
+    // const { assignmentId, signature, dateSigned } = req.body;
+
+    const formattedBody = { ...req.body };
+    ['dateSigned'].forEach(field => {
+      if (formattedBody[field]) {
+        formattedBody[field] = formatDate(formattedBody[field]);
+      }
     });
+
+    const billOfRights = new ClientBillOfRights(formattedBody);
 
     const createdBillOfRights = await billOfRights.save();
     res.status(201).json(createdBillOfRights);

@@ -571,6 +571,8 @@ const resetEmployeePassword = asyncHandler(async (req, res) => {
   }
 });
 
+
+
 const setEmployeeToggle = asyncHandler(async (req, res) => {
   const employeeId = req.body.employeeId;
   const isReadyForExtraHours = req.body.ready_to_work_extra_hours;

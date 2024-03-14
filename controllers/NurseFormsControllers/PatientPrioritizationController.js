@@ -1,18 +1,19 @@
 const asyncHandler = require("express-async-handler");
 const PatientPrioritization = require("../../models/NurseFormsModels/PatientPrioritizationModal");
+const formatDate = require("../../utils/formatDate");
 
 // Create Patient Prioritization
 const createPatientPrioritization = asyncHandler(async (req, res) => {
   try {
-    const { assignmentId, patientName, patientId, nurse, priorityLevel, date } = req.body;
-    const patientPrioritization = new PatientPrioritization({
-      assignmentId,
-      patientName,
-      patientId,
-      nurse,
-      date,
-      priorityLevel,
+    
+    const formattedBody = { ...req.body };
+    ['date'].forEach(field => {
+      if (formattedBody[field]) {
+        formattedBody[field] = formatDate(formattedBody[field]);
+      }
     });
+    
+    const patientPrioritization = new PatientPrioritization(formattedBody);
 
     const createdPatientPrioritization = await patientPrioritization.save();
     res.status(200).json(createdPatientPrioritization);

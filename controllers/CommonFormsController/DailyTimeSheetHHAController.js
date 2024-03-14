@@ -1,5 +1,6 @@
 const asyncHandler = require('express-async-handler');
 const DailyTimeSheet = require('../../models/CommonFormsModels/DailyTimeSheetHHAModel.js');
+const formatDate = require('../../utils/formatDate.js');
 
 const createTimeSheet = asyncHandler(async (req, res) => {
   try {
@@ -20,14 +21,20 @@ const createTimeSheet = asyncHandler(async (req, res) => {
 
       return `${hours}:${minutes}`;
     };
-
+    const formattedBody = { ...req.body };
+    ['date'].forEach((field) => {
+      if (formattedBody[field]) {
+        formattedBody[field] = formatDate(formattedBody[field]);
+      }
+    });
     // Convert startTime and endTime from req.body
     const convertedStartTime = convertTime12to24(req.body.startTime);
     const convertedEndTime = convertTime12to24(req.body.endTime);
 
     // Create a new DailyTimeSheet with converted times
     const timeSheet = new DailyTimeSheet({
-      ...req.body,
+      // ...req.body,
+      ...formattedBody,
       startTime: convertedStartTime,
       endTime: convertedEndTime,
     });

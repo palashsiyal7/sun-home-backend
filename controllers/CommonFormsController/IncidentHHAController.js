@@ -1,14 +1,39 @@
-const IncidentHHAForm = require('../../models/CommonFormsModels/IncidentHHAModel');
+const IncidentHHAForm = require("../../models/CommonFormsModels/IncidentHHAModel");
 const asyncHandler = require("express-async-handler");
+const formatDate = require("../../utils/formatDate");
+
+// const createForm = asyncHandler(async (req, res) => {
+//     try {
+//       const newIncidentHHAForm = await IncidentHHAForm.create(req.body);
+//       res.status(201).json(newIncidentHHAForm);
+//     } catch (error) {
+//       res.status(400).json({ message: error.message });
+//     }
+//   });
 
 const createForm = asyncHandler(async (req, res) => {
-    try {
-      const newIncidentHHAForm = await IncidentHHAForm.create(req.body);
-      res.status(201).json(newIncidentHHAForm);
-    } catch (error) {
-      res.status(400).json({ message: error.message });
-    }
-  });
+  try {
+    const formattedBody = { ...req.body };
+    [
+      "incidentDate",
+      "incidentDate1",
+      "incidentReportedDate",
+      "DateCorrectiveActions",
+      "signatureDate1",
+      "signatureDate2",
+      "signatureDate3",
+    ].forEach((field) => {
+      if (formattedBody[field]) {
+        formattedBody[field] = formatDate(formattedBody[field]);
+      }
+    });
+
+    const newIncidentHHAForm = await IncidentHHAForm.create(formattedBody);
+    res.status(201).json(newIncidentHHAForm);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+});
 
 const getAllForms = asyncHandler(async (req, res) => {
   try {
@@ -24,7 +49,7 @@ const getFormById = asyncHandler(async (req, res) => {
     const form = await IncidentHHAForm.findById(req.params.id);
     if (!form) {
       // Use return here to stop the function if the form is not found
-      return res.status(404).json({ message: 'Form not found' });
+      return res.status(404).json({ message: "Form not found" });
     }
     // If the form is found, send it and stop the function here
     return res.status(200).json(form);
@@ -33,15 +58,14 @@ const getFormById = asyncHandler(async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 });
-
 
 const getFormByAssignmentId = asyncHandler(async (req, res) => {
   try {
     const assignmentId = req.params.id;
-    const form = await IncidentHHAForm.findOne({assignmentId});
+    const form = await IncidentHHAForm.findOne({ assignmentId });
     if (!form) {
       // Use return here to stop the function if the form is not found
-      return res.status(404).json({ message: 'Form not found' });
+      return res.status(404).json({ message: "Form not found" });
     }
     // If the form is found, send it and stop the function here
     return res.status(200).json(form);
@@ -51,12 +75,15 @@ const getFormByAssignmentId = asyncHandler(async (req, res) => {
   }
 });
 
-
 const updateFormById = asyncHandler(async (req, res) => {
-  console.log('hitttttttttttttttttt');
+  console.log("hitttttttttttttttttt");
   try {
     const assignmentId = req.params.id;
-    const updatedForm = await IncidentHHAForm.findOneAndUpdate({assignmentId}, req.body, { new: true })
+    const updatedForm = await IncidentHHAForm.findOneAndUpdate(
+      { assignmentId },
+      req.body,
+      { new: true }
+    );
     // const updatedForm = await IncidentHHAForm.(req.params.id, req.body, { new: true });
     res.status(200).json(updatedForm);
   } catch (error) {
@@ -67,12 +94,17 @@ const updateFormById = asyncHandler(async (req, res) => {
 const deleteFormById = asyncHandler(async (req, res) => {
   try {
     await IncidentHHAForm.findByIdAndDelete(req.params.id);
-    res.status(200).json({ message: 'Form successfully deleted' });
+    res.status(200).json({ message: "Form successfully deleted" });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 });
 
 module.exports = {
-  createForm,getAllForms,getFormById,updateFormById,deleteFormById,getFormByAssignmentId
-}
+  createForm,
+  getAllForms,
+  getFormById,
+  updateFormById,
+  deleteFormById,
+  getFormByAssignmentId,
+};

@@ -4,6 +4,7 @@ const Employee = require("../models/EmployeeModel");
 const _ = require('lodash'); // Make sure lodash is imported
 const { Long } = require("mongodb");
 const PatientModel = require("../models/PatientModel");
+const formatDate = require("../utils/formatDate");
 
 // @desc Create new assignment
 // @route POST /assignments
@@ -222,6 +223,51 @@ const getFilteredAssignments = asyncHandler(async (req, res) => {
   }
 });
 
+// for mobile view 
+const getAssignmentsByEIdAndDate = asyncHandler(async (req, res) => {
+  console.log('hit');
+  try {
+    // Extracting employeeId and optionally date from the query parameters
+    const { employeeId, date } = req.query;
+
+    let formatedDate;
+
+    if(date){
+      formatedDate = formatDate(date)
+    }else{
+      formatedDate = date;
+    }
+
+    // Create a filter object based on the employeeId
+    const filters = {
+      employee: employeeId, // Assuming the employee reference field in Assignment schema is named 'employee'
+    };
+
+    // If a date is provided, add date filtering to the query
+    if (formatedDate) {
+      // Assuming formatedDate is provided in ISO format (e.g., "2024-02-20")
+      filters.assignmentDate = {
+        $gte: new Date(formatedDate),
+        $lt: new Date(formatedDate).setDate(new Date(formatedDate).getDate() + 1)
+      };
+    }
+
+    const assignments = await Assignment.find(filters).populate('employee').populate('timeSlot').populate('patient', 'patient_name');
+
+    if (assignments.length === 0) {
+      return res.status(404).json({ message: 'No assignments found matching the criteria' });
+    }
+
+    res.json(assignments);
+  } catch (error) {
+    console.error('Error in getFilteredAssignments:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+
+
+
 const existingAssignments = async (req, res) => {
   try {
       const { employeeId, timeSlotId, assignmentDate } = req.query;
@@ -239,6 +285,7 @@ const existingAssignments = async (req, res) => {
       res.status(500).json({ error: "Failed to fetch assignments." });
   }
 }
+
 
 const patientStatus = async (req, res) => {
   try {
@@ -291,5 +338,6 @@ module.exports = {
   deleteAssignment,
   getFilteredAssignments,
   existingAssignments,
-  patientStatus
+  patientStatus,
+  getAssignmentsByEIdAndDate
 };

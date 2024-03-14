@@ -1,14 +1,33 @@
 const MissedVisitForm = require('../../models/CommonFormsModels/MissedVisitHHAModel');
 const asyncHandler = require("express-async-handler");
+const formatDate = require('../../utils/formatDate');
+
+// const createForm = asyncHandler(async (req, res) => {
+//   try {
+//     const newForm = await MissedVisitForm.create(req.body);
+//     res.status(200).json(newForm);
+//   } catch (error) {
+//     res.status(400).json({ message: error.message });
+//   }
+// })
 
 const createForm = asyncHandler(async (req, res) => {
   try {
-    const newForm = await MissedVisitForm.create(req.body);
+    // Format date fields in req.body
+    const formattedBody = { ...req.body };
+    ['physicianCaseManagerNotifiedDate', 'dateOfMissedVisit', 'visitShiftMissedDueDate', 'patientRefusedServicesForThisDate', 'shiftVisitRescheduledFor', 'careCoordinatorDate'].forEach(field => {
+      if (formattedBody[field]) {
+        formattedBody[field] = formatDate(formattedBody[field]);
+      }
+    });
+
+    // Create new form with formatted date fields
+    const newForm = await MissedVisitForm.create(formattedBody);
     res.status(200).json(newForm);
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
-})
+});
 
 const getAllForms = asyncHandler(async (req, res) => {
   try {

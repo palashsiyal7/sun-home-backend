@@ -1,16 +1,21 @@
 const asyncHandler = require("express-async-handler")
-const PolicyOnConfidentiality = require("../../models/NurseFormsModels/PolicyOnConfidentialityModel")
+const PolicyOnConfidentiality = require("../../models/NurseFormsModels/PolicyOnConfidentialityModel");
+const formatDate = require("../../utils/formatDate");
 
 // Create Policy On Confidentiality
 const createPolicy = asyncHandler(async (req, res) => {
     try {
-      const { assignmentId, name, address, date } = req.body;
-      const policy = new PolicyOnConfidentiality({
-        assignmentId,
-        name,
-        address,
-        date,
-      });
+      // const { assignmentId, name, address, date } = req.body;
+      
+
+      const formattedBody = { ...req.body };
+    ['date'].forEach(field => {
+      if (formattedBody[field]) {
+        formattedBody[field] = formatDate(formattedBody[field]);
+      }
+    });
+
+    const policy = new PolicyOnConfidentiality(formattedBody);
   
       const createdPolicy = await policy.save();
       res.status(201).json(createdPolicy);

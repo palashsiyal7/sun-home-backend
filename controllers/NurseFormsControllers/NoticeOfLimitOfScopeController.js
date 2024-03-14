@@ -1,23 +1,54 @@
 const asyncHandler = require("express-async-handler");
 const noticeOfLimitOfScope = require("../../models/NurseFormsModels/NoticeOfLimitOfScopeModel");
-
+const { parseISO, formatISO } = require('date-fns');
 // Create Confidential Info
+// const createForm = asyncHandler(async (req, res) => {
+//     try {
+//       const { assignmentId, patientSignature, date } = req.body;
+//       const notice = new noticeOfLimitOfScope({
+//         assignmentId,
+//         patientSignature,
+//         date,
+//       });
+  
+//       const createdNotice = await notice.save();
+//       res.status(200).json(createdNotice);
+//     } catch (error) {
+//       res.status(500).json({ message: error.message });
+//     }
+//   });
+
 const createForm = asyncHandler(async (req, res) => {
-    try {
-      const { assignmentId, patientSignature, date } = req.body;
-      const notice = new noticeOfLimitOfScope({
-        assignmentId,
-        patientSignature,
-        date,
-      });
-  
-      const createdNotice = await notice.save();
-      res.status(200).json(createdNotice);
-    } catch (error) {
-      res.status(500).json({ message: error.message });
+  try {
+    const { assignmentId, patientSignature, date } = req.body;
+
+    // Parse the date to handle different formats
+    let formattedDate;
+    if (date.includes('/')) {
+      // Assuming the input format is DD/MM/YYYY
+      const [day, month, year] = date.split('/');
+      formattedDate = formatISO(new Date(year, month - 1, day));
+    } else if (date.includes('T') && date.endsWith('Z')) {
+      // If the date is already in ISO format
+      formattedDate = date;
+    } else {
+      // For any other format, attempt to parse directly (might need adjustments based on expected inputs)
+      formattedDate = formatISO(parseISO(date));
     }
-  });
-  
+
+    const notice = new noticeOfLimitOfScope({
+      assignmentId,
+      patientSignature,
+      date: formattedDate, // Use the formatted date
+    });
+
+    const createdNotice = await notice.save();
+    res.status(200).json(createdNotice);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 
 // Get All Confidential Infos
 const getAllForms = asyncHandler(async (req, res) => {

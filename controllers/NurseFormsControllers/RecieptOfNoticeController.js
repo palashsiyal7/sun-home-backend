@@ -1,38 +1,18 @@
 const asyncHandler = require("express-async-handler");
 const PrivacyPracticesReceipt = require("../../models/NurseFormsModels/ReceiptOfNoticeModel");
+const formatDate = require("../../utils/formatDate");
 
 // Create Privacy Practices Receipt
 const createReceipt = asyncHandler(async (req, res) => {
   try {
-    const {
-      assignmentId,
-      patientName,
-      medicalRecordNumber,
-      dateOfAdmission,
-      patientSignature,
-      patientSignatureDate,
-      representativeSignature,
-      representativeSignatureDate,
-      wasPrivacyNoticeProvided,
-      effortsToObtainAcknowledgement,
-      clinicianSignature,
-      clinicianSignatureDate
-    } = req.body;
-
-    const receipt = new PrivacyPracticesReceipt({
-      assignmentId,
-      patientName,
-      medicalRecordNumber,
-      dateOfAdmission,
-      patientSignature,
-      patientSignatureDate,
-      representativeSignature,
-      representativeSignatureDate,
-      wasPrivacyNoticeProvided,
-      effortsToObtainAcknowledgement,
-      clinicianSignature,
-      clinicianSignatureDate
+    const formattedBody = { ...req.body };
+    ['dateOfAdmission','patientSignatureDate','representativeSignatureDate','clinicianSignatureDate'].forEach(field => {
+      if (formattedBody[field]) {
+        formattedBody[field] = formatDate(formattedBody[field]);
+      }
     });
+
+    const receipt = new PrivacyPracticesReceipt(formattedBody);
 
     const createdReceipt = await receipt.save();
     res.status(201).json(createdReceipt);

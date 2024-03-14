@@ -1,34 +1,24 @@
 const asyncHandler = require("express-async-handler");
 const ConfidentialInfo = require("../../models/NurseFormsModels/ConfidentialInfoModel");
+const formatDate = require("../../utils/formatDate");
 
-  // Create Confidential Info
-  const createForm = asyncHandler(async (req, res) => {
-    try {
-      const {
-        assignmentId,
-        patientSignature,
-        patientName,
-        patientDate,
-        clinicianSignature,
-        clinicianName,
-        clinicianDate,
-      } = req.body;
-      const confidentialInfo = new ConfidentialInfo({
-        assignmentId,
-        patientSignature,
-        patientName,
-        patientDate,
-        clinicianSignature,
-        clinicianName,
-        clinicianDate,
-      });
+// Create Confidential Info
+const createForm = asyncHandler(async (req, res) => {
+  try {
+    const formattedBody = { ...req.body };
+    ["patientDate", "clinicianDate"].forEach((field) => {
+      if (formattedBody[field]) {
+        formattedBody[field] = formatDate(formattedBody[field]);
+      }
+    });
+    const confidentialInfo = new ConfidentialInfo(formattedBody);
 
-      const createdConfidentialInfo = await confidentialInfo.save();
-      res.status(200).json(createdConfidentialInfo);
-    } catch {
-      res.status(500).json({ message: error.message });
-    }
-  });
+    const createdConfidentialInfo = await confidentialInfo.save();
+    res.status(200).json(createdConfidentialInfo);
+  } catch {
+    res.status(500).json({ message: error.message });
+  }
+});
 
 // Get All Confidential Infos
 const getAllForms = asyncHandler(async (req, res) => {
@@ -87,7 +77,7 @@ const deleteForm = asyncHandler(async (req, res) => {
 
     if (confidentialInfo) {
       // await confidentialInfo.remove();
-      await confidentialInfo.deleteOne({_id: req.params.id});
+      await confidentialInfo.deleteOne({ _id: req.params.id });
 
       res.status(200).json({ message: "Confidential info removed" });
     } else {
@@ -120,21 +110,23 @@ const getFormByAssignmentId = asyncHandler(async (req, res) => {
 // Update Confidential Info by assignmentId
 const updateFormByAssignmentId = asyncHandler(async (req, res) => {
   try {
-    const assignmentId  = req.params.id;
-    console.log("updateFormByAssignmentId-confidential-info-Controller api hit");
+    const assignmentId = req.params.id;
+    console.log(
+      "updateFormByAssignmentId-confidential-info-Controller api hit"
+    );
     console.log(req.body);
 
-    const confidentialForm = await ConfidentialInfo.findOne({assignmentId})
+    const confidentialForm = await ConfidentialInfo.findOne({ assignmentId });
 
-    if(!confidentialForm){
+    if (!confidentialForm) {
       res.status(404);
-      throw new Error('not form found on this assignment id');
+      throw new Error("not form found on this assignment id");
     }
     // Make sure to use the $set operator to specify the fields to update
     const updatedConfidentialInfo = await ConfidentialInfo.findOneAndUpdate(
       { assignmentId }, // Filter by assignmentId
       req.body, // Use $set to update the document fields with req.body
-      { new: true} // Return the updated document and run validators
+      { new: true } // Return the updated document and run validators
     );
     res.status(200).json(updatedConfidentialInfo);
   } catch (error) {
@@ -150,7 +142,9 @@ const deleteFormByAssignmentId = asyncHandler(async (req, res) => {
     });
 
     if (confidentialInfo) {
-      await confidentialInfo.deleteOne({assignmentId: req.params.assignmentId});
+      await confidentialInfo.deleteOne({
+        assignmentId: req.params.assignmentId,
+      });
       // await confidentialInfo.remove();
       res
         .status(200)
