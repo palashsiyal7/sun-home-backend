@@ -28,7 +28,6 @@ const getPatients = asyncHandler(async (req, res) => {
 //   }
 // });
 
-
 // Get patient by Id
 // const getPatientById = asyncHandler(async (req, res) => {
 //   const patientId = req.params.id;
@@ -46,42 +45,41 @@ const getPatients = asyncHandler(async (req, res) => {
 //   const patientId = req.params.id;
 
 //   const patient = await Patient.findById(patientId)
-//     .select({
-//       _id: 1,
-//       patient_name: 1,
-//       ss: 1,
-//       mcr: 1,
-//       mcd: 1,
-//       specialRequest: 1,
-//       dob: 1,
-//       city: 1,
-//       state: 1,
-//       zip: 1,
-//       phoneNumber: 1,
-//       address: 1,
-//       relativeNameFirst: 1,
-//       relativeContactFirst: 1,
-//       caseMgrName: 1,
-//       caseMgrPhone: 1,
-//       caseMgrEmail: 1,
-//       doctorName: 1,
-//       npi: 1,
-//       doctorPhone: 1,
-//       doctorAddress: 1,
-//       doctorCity: 1,
-//       doctorState: 1,
-//       doctorZip: 1,
-//       // daysNeeded: 1,
-//       // timeSlots: 1,
-//       programs: 1,
-//       code: 1,
-//       image: 1,
-//       days:1,
+// .select({
+//   _id: 1,
+//   patient_name: 1,
+//   ss: 1,
+//   mcr: 1,
+//   mcd: 1,
+//   specialRequest: 1,
+//   dob: 1,
+//   city: 1,
+//   state: 1,
+//   zip: 1,
+//   phoneNumber: 1,
+//   address: 1,
+//   relativeNameFirst: 1,
+//   relativeContactFirst: 1,
+//   caseMgrName: 1,
+//   caseMgrPhone: 1,
+//   caseMgrEmail: 1,
+//   doctorName: 1,
+//   npi: 1,
+//   doctorPhone: 1,
+//   doctorAddress: 1,
+//   doctorCity: 1,
+//   doctorState: 1,
+//   doctorZip: 1,
+//   // daysNeeded: 1,
+//   // timeSlots: 1,
+//   programs: 1,
+//   code: 1,
+//   image: 1,
+//   days:1,
 //     })
 //     .populate('days')
 //     // .populate('timeSlots') // Assuming 'timeSlots' is the correct field name in your Patient model
 //     // .populate('programs'); // Assuming 'programs' is the correct field name in your Patient model
-    
 
 //   if (!patient) {
 //     res.status(404).json({ error: "Patient not found" });
@@ -94,14 +92,44 @@ const getPatientById = asyncHandler(async (req, res) => {
   const patientId = req.params.id;
 
   const patient = await Patient.findById(patientId)
-    .populate('days.sunday')
-    .populate('days.monday')
-    .populate('days.tuesday')
-    .populate('days.wednesday')
-    .populate('days.thursday')
-    .populate('days.friday')
-    .populate('days.saturday');
-    // Note: If you have other fields to populate like 'programs', you can add them in a similar manner.
+    .select({
+      _id: 1,
+      patient_name: 1,
+      ss: 1,
+      mcr: 1,
+      mcd: 1,
+      specialRequest: 1,
+      dob: 1,
+      city: 1,
+      state: 1,
+      zip: 1,
+      phoneNumber: 1,
+      address: 1,
+      relativeNameFirst: 1,
+      relativeContactFirst: 1,
+      caseMgrName: 1,
+      caseMgrPhone: 1,
+      caseMgrEmail: 1,
+      doctorName: 1,
+      npi: 1,
+      doctorPhone: 1,
+      doctorAddress: 1,
+      doctorCity: 1,
+      doctorState: 1,
+      doctorZip: 1,
+      programs: 1,
+      code: 1,
+      image: 1,
+      days: 1,
+    })
+    .populate("days.sunday")
+    .populate("days.monday")
+    .populate("days.tuesday")
+    .populate("days.wednesday")
+    .populate("days.thursday")
+    .populate("days.friday")
+    .populate("days.saturday");
+  // Note: If you have other fields to populate like 'programs', you can add them in a similar manner.
 
   if (!patient) {
     res.status(404).json({ error: "Patient not found" });
@@ -143,124 +171,124 @@ const createPatient = async (req, res) => {
       programs,
       image,
       liveAlone,
-    liveWithOther,
-    aloneDuringDay,
-    bedBound,
-    bedRest,
-    upAsTolerated,
-    amputee,
-    amputeeInfo,
-    partialWeightBearing,
-    partialWeightBearingR,
-    partialWeightBearingL,
-    normalWeightBearing,
-    normalWeightBearingR,
-    normalWeightBearingL,
-    fallPrecautions,
-    speechDeficit,
-    visionDeficit,
-    glasses,
-    contacts,
-    visionOther,
-    hearingDeficit,
-    hearingAid,
-    dentures,
-    upper,
-    lower,
-    partial,
-    forgetfull,
-    urinaryCatheter,
-    prosthesis,
-    prosthesisInfo,
-    allergies,
-    allergiesInfo,
-    diabetic,
-    doNotCutNails,
-    diet,
-    dietInfo,
-    seizurePrecaution,
-    proneToFactures,
-    precautionOther,
-    bath_tubShowerEveryVisit,
-    bath_tubShowerWeekly,
-    bath_bedBathPartial,
-    bath_bedBathComplete,
-    bath_bedBathEveryVisit,
-    bath_bedBathWeekly,
-    bath_assistBathChairEveryVisit,
-    bath_assistBathChairWeekly,
-    bathOtherInfo,
-    personalCareEveryVisit,
-    personalCareWeekly,
-    personalCare_assistWithDressingEveryVisit,
-    personalCare_assistWithDressingWeekly,
-    personalCare_groomHairEveryVisit,
-    personalCare_groomHairWeekly,
-    personalCare_shampooEveryVisit,
-    personalCare_shampooWeekly,
-    personalCare_skinCareEveryVisit,
-    personalCare_skinCareWeekly,
-    personalCare_teethCareEveryVisit,
-    personalCare_teethCareWeekly,
-    personalCare_otherEveryVisit,
-    personalCare_otherWeekly,
-    personalCare_otherInfo,
-    procedures_toiletingAssistEveryVisit,
-    procedures_toiletingAssistWeekly,
-    procedures_catheterCareEveryVisit,
-    procedures_catheterCareWeekly,
-    procedures_ostomyCareEveryVisit,
-    procedures_ostomyCareWeekly,
-    procedures_medicationReminderEveryVisit,
-    procedures_medicationReminderWeekly,
-    procedures_otherEveryVisit,
-    procedures_otherWeekly,
-    procedures_otherInfo,
-    activity_assistWithAmbulation,
-    activity_assistWithWheelChair,
-    activity_assistWithWalker,
-    activity_assistWithCane,
-    activity_assistWithEveryVisit,
-    activity_assistWithWeekly,
-    activity_mobilityAssistChair,
-    activity_mobilityAssistBed,
-    activity_mobilityAssistShower,
-    activity_mobilityAssistTub,
-    activity_mobilityAssistEveryVisit,
-    activity_mobilityAssistWeekly,
-    activity_exercisePerPTOT,
-    activity_exercisePerCarePlan,
-    activity_exerciseEveryVisit,
-    activity_exerciseWeekly,
-    activity_otherEveryVisit,
-    activity_otherWeekly,
-    activity_otherInfo,
-    nutrition_mealPreparationEveryVisit,
-    nutrition_mealPreparationWeekly,
-    nutrition_assistWithFeedingEveryVisit,
-    nutrition_assistWithFeedingWeekly,
-    nutrition_limitFluid,
-    nutrition_encourageFluid,
-    nutrition_fluidEveryVisit,
-    nutrition_fluidWeekly,
-    nutrition_groceryShoppingEveryVisit,
-    nutrition_groceryShoppingWeekly,
-    nutrition_otherEveryVisit,
-    nutrition_otherWeekly,
-    nutrition_otherInfo,
-    other_laundryEveryVisit,
-    other_laundryWeekly,
-    other_bedroomKeeping,
-    other_bathroomKeeping,
-    other_kitchenKeeping,
-    other_bedLinenKeeping,
-    other_houseKeepingEveryVisit,
-    other_houseKeepingWeekly,
-    other_equipmentCareEveryVisit,
-    other_equipmentCareWeekly,
-    other_transportationEveryVisit,
-    other_transportationWeekly,
-    other_otherInfo,
+      liveWithOther,
+      aloneDuringDay,
+      bedBound,
+      bedRest,
+      upAsTolerated,
+      amputee,
+      amputeeInfo,
+      partialWeightBearing,
+      partialWeightBearingR,
+      partialWeightBearingL,
+      normalWeightBearing,
+      normalWeightBearingR,
+      normalWeightBearingL,
+      fallPrecautions,
+      speechDeficit,
+      visionDeficit,
+      glasses,
+      contacts,
+      visionOther,
+      hearingDeficit,
+      hearingAid,
+      dentures,
+      upper,
+      lower,
+      partial,
+      forgetfull,
+      urinaryCatheter,
+      prosthesis,
+      prosthesisInfo,
+      allergies,
+      allergiesInfo,
+      diabetic,
+      doNotCutNails,
+      diet,
+      dietInfo,
+      seizurePrecaution,
+      proneToFactures,
+      precautionOther,
+      bath_tubShowerEveryVisit,
+      bath_tubShowerWeekly,
+      bath_bedBathPartial,
+      bath_bedBathComplete,
+      bath_bedBathEveryVisit,
+      bath_bedBathWeekly,
+      bath_assistBathChairEveryVisit,
+      bath_assistBathChairWeekly,
+      bathOtherInfo,
+      personalCareEveryVisit,
+      personalCareWeekly,
+      personalCare_assistWithDressingEveryVisit,
+      personalCare_assistWithDressingWeekly,
+      personalCare_groomHairEveryVisit,
+      personalCare_groomHairWeekly,
+      personalCare_shampooEveryVisit,
+      personalCare_shampooWeekly,
+      personalCare_skinCareEveryVisit,
+      personalCare_skinCareWeekly,
+      personalCare_teethCareEveryVisit,
+      personalCare_teethCareWeekly,
+      personalCare_otherEveryVisit,
+      personalCare_otherWeekly,
+      personalCare_otherInfo,
+      procedures_toiletingAssistEveryVisit,
+      procedures_toiletingAssistWeekly,
+      procedures_catheterCareEveryVisit,
+      procedures_catheterCareWeekly,
+      procedures_ostomyCareEveryVisit,
+      procedures_ostomyCareWeekly,
+      procedures_medicationReminderEveryVisit,
+      procedures_medicationReminderWeekly,
+      procedures_otherEveryVisit,
+      procedures_otherWeekly,
+      procedures_otherInfo,
+      activity_assistWithAmbulation,
+      activity_assistWithWheelChair,
+      activity_assistWithWalker,
+      activity_assistWithCane,
+      activity_assistWithEveryVisit,
+      activity_assistWithWeekly,
+      activity_mobilityAssistChair,
+      activity_mobilityAssistBed,
+      activity_mobilityAssistShower,
+      activity_mobilityAssistTub,
+      activity_mobilityAssistEveryVisit,
+      activity_mobilityAssistWeekly,
+      activity_exercisePerPTOT,
+      activity_exercisePerCarePlan,
+      activity_exerciseEveryVisit,
+      activity_exerciseWeekly,
+      activity_otherEveryVisit,
+      activity_otherWeekly,
+      activity_otherInfo,
+      nutrition_mealPreparationEveryVisit,
+      nutrition_mealPreparationWeekly,
+      nutrition_assistWithFeedingEveryVisit,
+      nutrition_assistWithFeedingWeekly,
+      nutrition_limitFluid,
+      nutrition_encourageFluid,
+      nutrition_fluidEveryVisit,
+      nutrition_fluidWeekly,
+      nutrition_groceryShoppingEveryVisit,
+      nutrition_groceryShoppingWeekly,
+      nutrition_otherEveryVisit,
+      nutrition_otherWeekly,
+      nutrition_otherInfo,
+      other_laundryEveryVisit,
+      other_laundryWeekly,
+      other_bedroomKeeping,
+      other_bathroomKeeping,
+      other_kitchenKeeping,
+      other_bedLinenKeeping,
+      other_houseKeepingEveryVisit,
+      other_houseKeepingWeekly,
+      other_equipmentCareEveryVisit,
+      other_equipmentCareWeekly,
+      other_transportationEveryVisit,
+      other_transportationWeekly,
+      other_otherInfo,
       // ... include other fields as needed
     } = req.body;
 
@@ -417,16 +445,16 @@ const createPatient = async (req, res) => {
       other_transportationEveryVisit,
       other_transportationWeekly,
       other_otherInfo,
-      
+
       // ... include other fields as needed
     });
 
-      // Check if phoneNumber is already in use
-  // const existingContactNo = await Patient.findOne({ phoneNumber });
-  // if (existingContactNo) {
-  //   res.status(422).json({ error: "Contact Number already in use" });
-  //   return;
-  // }
+    // Check if phoneNumber is already in use
+    // const existingContactNo = await Patient.findOne({ phoneNumber });
+    // if (existingContactNo) {
+    //   res.status(422).json({ error: "Contact Number already in use" });
+    //   return;
+    // }
 
     const savedPatient = await newPatient.save();
     res.status(201).json(savedPatient);
@@ -435,21 +463,24 @@ const createPatient = async (req, res) => {
   }
 };
 
-
 // Function to generate the patient code
 const generatePatientCode = (patientName, address, zip) => {
   // Get initials of patient name
-  const initials = patientName.split(' ').map(name => name[0]).join('').toUpperCase();
+  const initials = patientName
+    .split(" ")
+    .map((name) => name[0])
+    .join("")
+    .toUpperCase();
 
   // Get the first 4 characters of the address
-  const addressInitials = address.replace(/\s+/g, '').slice(0, 4).toUpperCase();
+  const addressInitials = address.replace(/\s+/g, "").slice(0, 4).toUpperCase();
 
   // Get the zipcode
   const zipcode = zip;
 
   // Concatenate the parts to form the code
   const code = `${initials}${addressInitials}${zipcode}`;
-  
+
   return code;
 };
 
@@ -469,7 +500,7 @@ const updatePatientInfo = async (req, res) => {
     const updatedPatient = await patient.save();
     res.json(updatedPatient);
   } catch (error) {
-    console.log(error)
+    console.log(error);
     res.status(400).json({ message: error.message });
   }
 };
