@@ -252,7 +252,10 @@ const getAssignmentsByEIdAndDate = asyncHandler(async (req, res) => {
       };
     }
 
-    const assignments = await Assignment.find(filters).populate('employee').populate('timeSlot').populate('patient', 'patient_name');
+    const assignments = await Assignment.find(filters)
+    .populate("patient", "patient_name dob address image code")
+    .populate("employee", "name role phoneNumber email ready_to_work_extra_hours")
+    .populate("timeSlot", "timeSlot_name");
 
     if (assignments.length === 0) {
       return res.status(404).json({ message: 'No assignments found matching the criteria' });

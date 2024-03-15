@@ -15,7 +15,7 @@ const createForm = asyncHandler(async (req, res) => {
 
     const createdConfidentialInfo = await confidentialInfo.save();
     res.status(200).json(createdConfidentialInfo);
-  } catch {
+  } catch (error) {
     res.status(500).json({ message: error.message });
   }
 });
@@ -25,7 +25,7 @@ const getAllForms = asyncHandler(async (req, res) => {
   try {
     const confidentialInfos = await ConfidentialInfo.find({});
     res.status(200).json(confidentialInfos);
-  } catch {
+  } catch (error) {
     res.status(500).json({ message: error.message });
   }
 });
@@ -65,7 +65,7 @@ const updateForm = asyncHandler(async (req, res) => {
     } else {
       res.status(404).json({ message: "Confidential info not found" });
     }
-  } catch {
+  } catch (error) {
     res.status(500).json({ message: error.message });
   }
 });
@@ -83,7 +83,7 @@ const deleteForm = asyncHandler(async (req, res) => {
     } else {
       res.status(404).json({ message: "Confidential info not found" });
     }
-  } catch {
+  } catch(error) {
     res.status(500).json({ message: error.message });
   }
 });

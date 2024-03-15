@@ -1,6 +1,7 @@
 const MissedVisitForm = require('../../models/CommonFormsModels/MissedVisitHHAModel');
 const asyncHandler = require("express-async-handler");
 const formatDate = require('../../utils/formatDate');
+const formatTime = require("../../utils/formatTime");
 
 // const createForm = asyncHandler(async (req, res) => {
 //   try {
@@ -15,13 +16,33 @@ const createForm = asyncHandler(async (req, res) => {
   try {
     // Format date fields in req.body
     const formattedBody = { ...req.body };
-    ['physicianCaseManagerNotifiedDate', 'dateOfMissedVisit', 'visitShiftMissedDueDate', 'patientRefusedServicesForThisDate', 'shiftVisitRescheduledFor', 'careCoordinatorDate'].forEach(field => {
+    [
+      'physicianCaseManagerNotifiedDate', 
+      'dateOfMissedVisit', 
+      'visitShiftMissedDueDate', 
+      'patientRefusedServicesForThisDate', 
+      'shiftVisitRescheduledFor', 
+      'careCoordinatorDate'
+    ].forEach(field => {
       if (formattedBody[field]) {
         formattedBody[field] = formatDate(formattedBody[field]);
       }
     });
 
-    // Create new form with formatted date fields
+    // Format time fields in req.body
+    [
+      'patientNotifiedTime',
+      'phonedTime',
+      'visitShiftMissedDueTime',
+      'homeHealthAideTime',
+      // Add any other time fields here
+    ].forEach(timeField => {
+      if (formattedBody[timeField]) {
+        formattedBody[timeField] = formatTime(formattedBody[timeField]);
+      }
+    });
+
+    // Create new form with formatted date and time fields
     const newForm = await MissedVisitForm.create(formattedBody);
     res.status(200).json(newForm);
   } catch (error) {
@@ -29,9 +50,27 @@ const createForm = asyncHandler(async (req, res) => {
   }
 });
 
+// const createForm = asyncHandler(async (req, res) => {
+//   try {
+//     // Format date fields in req.body
+//     const formattedBody = { ...req.body };
+//     ['physicianCaseManagerNotifiedDate', 'dateOfMissedVisit', 'visitShiftMissedDueDate', 'patientRefusedServicesForThisDate', 'shiftVisitRescheduledFor', 'careCoordinatorDate'].forEach(field => {
+//       if (formattedBody[field]) {
+//         formattedBody[field] = formatDate(formattedBody[field]);
+//       }
+//     });
+
+//     // Create new form with formatted date fields
+//     const newForm = await MissedVisitForm.create(formattedBody);
+//     res.status(200).json(newForm);
+//   } catch (error) {
+//     res.status(400).json({ message: error.message });
+//   }
+// });
+
 const getAllForms = asyncHandler(async (req, res) => {
   try {
-    const forms = await MissedVisitForm.find().populate('patientId');
+    const forms = await MissedVisitForm.find()
     res.status(200).json(forms);
   } catch (error) {
     res.status(500).json({ message: error.message });

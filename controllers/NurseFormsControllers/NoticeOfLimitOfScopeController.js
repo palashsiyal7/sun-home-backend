@@ -55,7 +55,7 @@ const getAllForms = asyncHandler(async (req, res) => {
   try {
     const noticeInfo = await noticeOfLimitOfScope.find({});
     res.status(200).json(noticeInfo);
-  } catch {
+  } catch (error) {
     res.status(500).json({ message: error.message });
   }
 });
@@ -101,7 +101,7 @@ const deleteForm = asyncHandler(async (req, res) => {
     } else {
       res.status(404).json({ message: "Confidential info not found" });
     }
-  } catch {
+  } catch (error) {
     res.status(500).json({ message: error.message });
   }
 });

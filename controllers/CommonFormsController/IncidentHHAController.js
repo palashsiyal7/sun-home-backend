@@ -1,6 +1,7 @@
 const IncidentHHAForm = require("../../models/CommonFormsModels/IncidentHHAModel");
 const asyncHandler = require("express-async-handler");
 const formatDate = require("../../utils/formatDate");
+const formatTime = require("../../utils/formatTime");
 
 // const createForm = asyncHandler(async (req, res) => {
 //     try {
@@ -14,6 +15,8 @@ const formatDate = require("../../utils/formatDate");
 const createForm = asyncHandler(async (req, res) => {
   try {
     const formattedBody = { ...req.body };
+
+    // Format date fields
     [
       "incidentDate",
       "incidentDate1",
@@ -28,12 +31,50 @@ const createForm = asyncHandler(async (req, res) => {
       }
     });
 
+    // Format time fields to 24-hour format
+    [
+      "incidentTime",
+      "incidentTime1",
+      "incidentReportedTime",
+      "signature1Time",
+      "signature2Time",
+      "signature3Time"
+    ].forEach((field) => {
+      if (formattedBody[field]) {
+        formattedBody[field] = formatTime(formattedBody[field]);
+      }
+    });
+
     const newIncidentHHAForm = await IncidentHHAForm.create(formattedBody);
     res.status(201).json(newIncidentHHAForm);
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
 });
+
+// const createForm = asyncHandler(async (req, res) => {
+//   try {
+//     const formattedBody = { ...req.body };
+//     [
+//       "incidentDate",
+//       "incidentDate1",
+//       "incidentReportedDate",
+//       "DateCorrectiveActions",
+//       "signatureDate1",
+//       "signatureDate2",
+//       "signatureDate3",
+//     ].forEach((field) => {
+//       if (formattedBody[field]) {
+//         formattedBody[field] = formatDate(formattedBody[field]);
+//       }
+//     });
+
+//     const newIncidentHHAForm = await IncidentHHAForm.create(formattedBody);
+//     res.status(201).json(newIncidentHHAForm);
+//   } catch (error) {
+//     res.status(400).json({ message: error.message });
+//   }
+// });
 
 const getAllForms = asyncHandler(async (req, res) => {
   try {

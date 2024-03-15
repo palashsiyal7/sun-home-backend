@@ -1,16 +1,51 @@
 const asyncHandler = require('express-async-handler');
 const Schedule = require('../../models/CommonFormsModels/ScheduleHHAModel');
 const formatDate = require('../../utils/formatDate');
+const formatTime = require('../../utils/formatTime')
 
 // Create a new PCA schedule
+// const createSchedule = asyncHandler(async (req, res) => {
+//   try {
+//     const formattedBody = { ...req.body };
+//     ['weekStartingDate'].forEach(field => {
+//       if (formattedBody[field]) {
+//         formattedBody[field] = formatDate(formattedBody[field]);
+//       }
+//     });
+//     const schedule = new Schedule(formattedBody);
+//     const createdSchedule = await schedule.save();
+//     res.status(200).json(createdSchedule);
+//   } catch (error) {
+//     res.status(400).json({ message: error.message });
+//   }
+// });
+
 const createSchedule = asyncHandler(async (req, res) => {
   try {
     const formattedBody = { ...req.body };
+
+    // Format weekStartingDate
     ['weekStartingDate'].forEach(field => {
       if (formattedBody[field]) {
         formattedBody[field] = formatDate(formattedBody[field]);
       }
     });
+
+    // Format start and end times for each day
+    const daysOfWeek = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+    daysOfWeek.forEach(day => {
+      if (formattedBody.days && formattedBody.days[day]) {
+        const { startTime, endTime } = formattedBody.days[day];
+        if (startTime) {
+          formattedBody.days[day].startTime = formatTime(startTime);
+        }
+        if (endTime) {
+          formattedBody.days[day].endTime = formatTime(endTime);
+        }
+      }
+    });
+
+    // Create and save the schedule
     const schedule = new Schedule(formattedBody);
     const createdSchedule = await schedule.save();
     res.status(200).json(createdSchedule);
@@ -18,6 +53,8 @@ const createSchedule = asyncHandler(async (req, res) => {
     res.status(400).json({ message: error.message });
   }
 });
+
+
 // weekStartingDate
 
 // Get all PCA schedules

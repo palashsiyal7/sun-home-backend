@@ -4,15 +4,15 @@ const noticeOfLimitOfScopeSchema = new mongoose.Schema({
   assignmentId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Assignment",
-    required: [true, "assignment Id is requiered"],
+    required: [false, "assignment Id is requiered"],
   },
   patientSignature: {
     type: String,
-    required: [true, "Patient signature is required"],
+    required: [false, "Patient signature is required"],
   },
   date: {
     type: Date,
-    required: [true, "Date of patient signature is required"],
+    required: [false, "Date of patient signature is required"],
   },
 });
 

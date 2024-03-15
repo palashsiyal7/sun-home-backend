@@ -111,17 +111,61 @@ const PatientSchema = mongoose.Schema(
       type: String,
       required: [false, `Please add the case doctor's zip.`],
     },
-    daysNeeded: {
-      type: [String],
-      default: [],
-      required: [false, `Must have atleast one day inside availability array`],
+    // daysNeeded: {
+    //   type: [String],
+    //   default: [],
+    //   required: [false, `Must have atleast one day inside availability array`],
+    // },
+    // timeSlots: [
+    //   {
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     ref: "TimeSlot",
+    //   },
+    // ],
+    days: {
+      sunday: [
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'TimeSlot',
+        },
+      ],
+      monday: [
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'TimeSlot',
+        },
+      ],
+      tuesday: [
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'TimeSlot',
+        },
+      ],
+      wednesday: [
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'TimeSlot',
+        },
+      ],
+      thursday: [
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'TimeSlot',
+        },
+      ],
+      friday: [
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'TimeSlot',
+        },
+      ],
+      saturday: [
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'TimeSlot',
+        },
+      ],
     },
-    timeSlots: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "TimeSlot",
-      },
-    ],
     programs: [
       {
         type: mongoose.Schema.Types.ObjectId,
@@ -610,6 +654,15 @@ const PatientSchema = mongoose.Schema(
       type: String,
       default: "",
     },
+    days: {
+          sunday: [{ type: String }],
+          monday: [{ type: String }],
+          tuesday: [{ type: String }],
+          wednesday: [{ type: String }],
+          thursday: [{ type: String }],
+          friday: [{ type: String }],
+          saturday: [{ type: String }]
+        }
   },
   {
     timestamps: false,
@@ -617,3 +670,45 @@ const PatientSchema = mongoose.Schema(
 );
 
 module.exports = mongoose.model("Patient", PatientSchema);
+
+// const mongoose = require('mongoose');
+
+// const PatientSchema = new mongoose.Schema({
+//   name: { type: String },
+//   ss: { type: String },
+//   mcr: { type: String },
+//   mcd: { type: String },
+//   specialRequest: { type: String },
+//   dob: { type: Date },
+//   city: { type: String },
+//   state: { type: String },
+//   zip: { type: String },
+//   phoneNumber: { type: String },
+//   address: { type: String },
+//   relativeNameFirst: { type: String },
+//   relativeContactFirst: { type: String },
+//   caseMgrName: { type: String },
+//   caseMgrPhone: { type: String },
+//   caseMgrEmail: { type: String },
+//   doctorName: { type: String },
+//   npi: { type: Number },
+//   doctorPhone: { type: String },
+//   doctorAddress: { type: String },
+//   doctorCity: { type: String },
+//   doctorState: { type: String },
+//   doctorZip: { type: String },
+//   programs: [{ type: String }], // Assuming these are IDs or strings
+//   days: {
+//     sunday: [{ type: String }],
+//     monday: [{ type: String }],
+//     tuesday: [{ type: String }],
+//     wednesday: [{ type: String }],
+//     thursday: [{ type: String }],
+//     friday: [{ type: String }],
+//     saturday: [{ type: String }]
+//   }
+// });
+
+// const Patient = mongoose.model('Patient', PatientSchema);
+
+// module.exports = Patient;

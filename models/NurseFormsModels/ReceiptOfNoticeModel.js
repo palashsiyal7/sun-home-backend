@@ -4,33 +4,33 @@ const privacyPracticesReceiptSchema = new mongoose.Schema({
   assignmentId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Assignment",
-    required: [true, "Assignment ID is required"],
+    required: [false, "Assignment ID is required"],
   },
   patientName: {
     type: String,
-    required: [true, "Patient name is required"],
+    required: [false, "Patient name is required"],
   },
   medicalRecordNumber: {
     type: String,
-    required: [true, "Medical record number is required"],
+    required: [false, "Medical record number is required"],
   },
   dateOfAdmission: {
     type: Date,
-    required: [true, "Date of admission is required"],
+    required: [false, "Date of admission is required"],
   },
   patientSignature: {
     type: String,
-    required: [true, "Patient's signature is required"],
+    required: [false, "Patient's signature is required"],
   },
   patientSignatureDate: {
     type: Date,
-    required: [true, "Date of patient's signature is required"],
+    required: [false, "Date of patient's signature is required"],
   },
   representativeSignature: String,
   representativeSignatureDate: Date,
   wasPrivacyNoticeProvided: {
     type: Boolean,
-    required: [true, "This field is required to indicate if the privacy notice was provided"],
+    required: [false, "This field is required to indicate if the privacy notice was provided"],
   },
   effortsToObtainAcknowledgement: String,
   clinicianSignature: String,

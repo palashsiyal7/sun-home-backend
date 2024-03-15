@@ -1,43 +1,30 @@
 const asyncHandler = require('express-async-handler');
 const DailyTimeSheet = require('../../models/CommonFormsModels/DailyTimeSheetHHAModel.js');
 const formatDate = require('../../utils/formatDate.js');
+const formatTime = require('../../utils/formatTime.js');
 
 const createTimeSheet = asyncHandler(async (req, res) => {
   try {
-    console.log("first");
-
-    // Function to convert time format from "2:59 PM" to "14:59"
-    const convertTime12to24 = (time12h) => {
-      const [time, modifier] = time12h.split(' ');
-      let [hours, minutes] = time.split(':');
-
-      if (hours === '12') {
-        hours = '00';
-      }
-
-      if (modifier === 'PM') {
-        hours = parseInt(hours, 10) + 12;
-      }
-
-      return `${hours}:${minutes}`;
-    };
+    // Create a copy of the request body to manipulate
     const formattedBody = { ...req.body };
+
+    // Format date fields
     ['date'].forEach((field) => {
       if (formattedBody[field]) {
         formattedBody[field] = formatDate(formattedBody[field]);
       }
     });
-    // Convert startTime and endTime from req.body
-    const convertedStartTime = convertTime12to24(req.body.startTime);
-    const convertedEndTime = convertTime12to24(req.body.endTime);
 
-    // Create a new DailyTimeSheet with converted times
-    const timeSheet = new DailyTimeSheet({
-      // ...req.body,
-      ...formattedBody,
-      startTime: convertedStartTime,
-      endTime: convertedEndTime,
-    });
+    // Convert startTime and endTime to 24-hour format if they exist
+    if (formattedBody.startTime) {
+      formattedBody.startTime = formatTime(formattedBody.startTime);
+    }
+    if (formattedBody.endTime) {
+      formattedBody.endTime = formatTime(formattedBody.endTime);
+    }
+
+    // Create the DailyTimeSheet with the formatted body
+    const timeSheet = new DailyTimeSheet(formattedBody);
 
     const createdTimeSheet = await timeSheet.save();
     res.status(201).json(createdTimeSheet);
@@ -47,11 +34,6 @@ const createTimeSheet = asyncHandler(async (req, res) => {
   }
 });
 
-module.exports = { createTimeSheet };
-
-
-
-// Get all time sheets
 const getAllTimeSheets = asyncHandler(async (req, res) => {
   const timeSheets = await DailyTimeSheet.find({});
   res.status(200).json(timeSheets);

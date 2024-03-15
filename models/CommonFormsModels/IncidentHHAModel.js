@@ -281,20 +281,15 @@ const incidentHHAFormSchema = mongoose.Schema({
 
     // other2: Boolean,
     other1desc: String,
+    other2desc: String,
+    other3desc: String,
+    other4desc: String,
+    other5desc: String,
+    other6desc: String,
 
-    other3: Boolean,
-    other1desc: String,
-
-    other4: Boolean,
-    other1desc:  String,
-
+    other1: Boolean,
     other5: Boolean,
-   
-    other6: {
-      type: Boolean,
-    },
-    other1desc:  String,
-    
+    other6: Boolean,
 });
 
 //create model and export
