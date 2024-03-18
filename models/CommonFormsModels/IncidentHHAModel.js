@@ -276,9 +276,6 @@ const incidentHHAFormSchema = mongoose.Schema({
 
     levelOfConciousness: String,
 
-    other1: Boolean,
-    other1desc: String,
-
     // other2: Boolean,
     other1desc: String,
     other2desc: String,

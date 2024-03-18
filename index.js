@@ -36,6 +36,8 @@ app.use("/api/clientbillrights", require('./routes/NurseFormsRoutes/ClientBillOf
 app.use("/api/patientprior", require('./routes/NurseFormsRoutes/PatientPrioritizationRoutes.js'))
 app.use("/api/policies", require('./routes/NurseFormsRoutes/PolicyOnConfidentialityRoutes.js'))
 app.use('/api/privacy-practices-receipt',require('./routes/NurseFormsRoutes/RecieptOfNoticeRoutes.js'))
+app.use("/api/quick-assessment", require('./routes/NurseFormsRoutes/QuickAssessmentRoutes.js'))
+
 // Serve Swagger UI
 app.use('/api', swaggerUI.serve, swaggerUI.setup(swaggerSpec));
 app.use(errorHandler);
