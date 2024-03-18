@@ -3,7 +3,15 @@ const Patient = require("../models/PatientModel");
 
 // Get all patients
 const getPatients = asyncHandler(async (req, res) => {
-  const patients = await Patient.find({});
+  const patients = await Patient.find({})
+  // .populate("days.sunday")
+  //   .populate("days.monday")
+  //   .populate("days.tuesday")
+  //   .populate("days.wednesday")
+  //   .populate("days.thursday")
+  //   .populate("days.friday")
+  //   .populate("days.saturday")
+  //   .populate('programs');
   res.status(200).json(patients);
 });
 
@@ -128,7 +136,8 @@ const getPatientById = asyncHandler(async (req, res) => {
     .populate("days.wednesday")
     .populate("days.thursday")
     .populate("days.friday")
-    .populate("days.saturday");
+    .populate("days.saturday")
+    .populate('programs')
   // Note: If you have other fields to populate like 'programs', you can add them in a similar manner.
 
   if (!patient) {

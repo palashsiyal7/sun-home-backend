@@ -220,16 +220,16 @@ const incidentHHAFormSchema = mongoose.Schema({
 
   //follow-up related to the incident
   physicianInformedImediately: Boolean,
-  ifYesByWhom: String,
+  ifYesByWhom: String, //
 
   physicianInstructionsGiven: Boolean,
-  ifYesComment: String,
+  ifYesComment: String, //
 
   familyInformed: Boolean,
-  ifYesWhoWasAssigned: String,
+  ifYesWhoWasAssigned: String, //
 
   otherInvolvedAgenciesInformed: Boolean,
-  ifYesByWhom1: String,
+  ifYesByWhom1: String, // 
 
   hrManagerNotified: {
     type: Boolean,
@@ -272,7 +272,7 @@ const incidentHHAFormSchema = mongoose.Schema({
 
   // added fields
   employeeName:String,
-    infectiousStatusOfSourceIndividual: Boolean,
+    // infectiousStatusOfSourceIndividual: Boolean,
 
     levelOfConciousness: String,
 
