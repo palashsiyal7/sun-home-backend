@@ -50,6 +50,9 @@ const QuickAssessmentSchema = new mongoose.Schema({
     min: 0,
     max: 10,
   },
+  date: {
+    type: Date,
+  },
 });
 
 module.exports = mongoose.model("QuickAssessment", QuickAssessmentSchema);

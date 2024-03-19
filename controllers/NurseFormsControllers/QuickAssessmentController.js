@@ -1,8 +1,24 @@
 const asyncHandler = require("express-async-handler");
 const QuickAssessment = require("../../models/NurseFormsModels/QuickAssessmentModel");
+const formatDate = require("../../utils/formatDate");
 
 // Create Quick Assessment
+// const createQuickAssessment = asyncHandler(async (req, res) => {
+//   const quickAssessment = new QuickAssessment(req.body);
+//   try {
+//     const createdQuickAssessment = await quickAssessment.save();
+//     res.status(201).json(createdQuickAssessment);
+//   } catch (error) {
+//     res.status(400).json({ message: error.message });
+//   }
+// });
+
 const createQuickAssessment = asyncHandler(async (req, res) => {
+  // Check if date is provided and format it if necessary
+  if (req.body.date) {
+    req.body.date = formatDate(req.body.date);
+  }
+
   const quickAssessment = new QuickAssessment(req.body);
   try {
     const createdQuickAssessment = await quickAssessment.save();

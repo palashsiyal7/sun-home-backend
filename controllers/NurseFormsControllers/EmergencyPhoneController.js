@@ -1,12 +1,12 @@
 const asyncHandler = require("express-async-handler");
-const patientEmergencyModel = require("../../models/NurseFormsModels/PatientEmergencyModel");
+const patientEmergencyModel = require("../../models/NurseFormsModels/EmergencyPhoneModel");
 const formatDate = require("../../utils/formatDate");
 
 // Create Confidential Info
 const createForm = asyncHandler(async (req, res) => {
   try {
     const formattedBody = { ...req.body };
-    ["socDate", "dateSigned","ifYesForRecieptOfHomeSafety"].forEach((field) => {
+    ["homeSafetyEvaluationDate"].forEach((field) => {
       if (formattedBody[field]) {
         formattedBody[field] = formatDate(formattedBody[field]);
       }

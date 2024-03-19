@@ -11,9 +11,10 @@ const getPatients = asyncHandler(async (req, res) => {
   //   .populate("days.thursday")
   //   .populate("days.friday")
   //   .populate("days.saturday")
-  //   .populate('programs');
+    .populate('programs');
   res.status(200).json(patients);
 });
+
 
 //Get all patinets with pagination
 // const getPatients = asyncHandler(async (req, res) => {
@@ -95,6 +96,7 @@ const getPatients = asyncHandler(async (req, res) => {
 //     res.status(200).json(patient);
 //   }
 // });
+
 
 const getPatientById = asyncHandler(async (req, res) => {
   const patientId = req.params.id;

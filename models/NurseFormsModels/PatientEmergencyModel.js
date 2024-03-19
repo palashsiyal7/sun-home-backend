@@ -152,7 +152,19 @@ const patientEmergencySchema = new mongoose.Schema({
     required: [false, "Emergency response system description is required if system is present"],
   },
 
+  // page 2
+  emergencyPrepardness: String,
+  water: String,
+  foodSupplyFor3D: String,
+  batteryOperatedRadio: String,
+  flashLight: String,
+  otherSpecify: String,
+  recieptOfHomeSafety: Boolean,
+  ifYesForRecieptOfHomeSafety: Date,
+  SymtomsToReport: String,
+  additionalEmergencyGuidelines:String,
 
+  // emergency plan
   emergencyContactName: {
     type: String,
     required: [false, "Emergency contact name is required"],
@@ -164,6 +176,11 @@ const patientEmergencySchema = new mongoose.Schema({
   emergencyContactRelation: {
     type: String,
     required: [false, "Emergency contact relation is required"],
+  },
+
+  ifNecessaryPatientWillEvacuvateTo: {
+    type:String,
+    enum: ['Relative', 'Friend'] 
   },
   evacuationContactName: { // radio button relative/friend
     type: String,
@@ -222,7 +239,7 @@ const patientEmergencySchema = new mongoose.Schema({
     type: String,
     required: [false, "Priority/acuity level is required"],
   },
-  clinicianName: {
+  clinicianSignature: {
     type: String,
     required: [false, "Clinician name is required"],
   },
