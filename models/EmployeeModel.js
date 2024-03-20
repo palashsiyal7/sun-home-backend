@@ -67,12 +67,11 @@ const EmployeeSchema = mongoose.Schema(
     image: {
       type: String,
     },
-    companies: [
+    companies: 
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Company",
       },
-    ],
   },
   {
     timestamps: true,

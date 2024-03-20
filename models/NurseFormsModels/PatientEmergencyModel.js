@@ -154,10 +154,10 @@ const patientEmergencySchema = new mongoose.Schema({
 
   // page 2
   emergencyPrepardness: String,
-  water: String,
-  foodSupplyFor3D: String,
-  batteryOperatedRadio: String,
-  flashLight: String,
+  water: Boolean,
+  foodSupplyFor3D: Boolean,
+  batteryOperatedRadio: Boolean,
+  flashLight: Boolean,
   otherSpecify: String,
   recieptOfHomeSafety: Boolean,
   ifYesForRecieptOfHomeSafety: Date,

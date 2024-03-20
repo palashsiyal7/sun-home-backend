@@ -21,7 +21,7 @@ router.get("/available", getAvailableEmployees);
 router.get("/by-timeslot", getEmployeeByTimeSlot);
 router.route("/").get(getEmployees).post(createEmployee);
 router.route("/:id").get(getEmployeeById).delete(deleteEmployee).put(updateEmployee);
-router.route("/:employeeId/update-info").post(updateEmployeeInfo);
+router.route("/:employeeId").put(updateEmployeeInfo);
 router.post("/signin", employeeSignin);
 router.put("/resetPassword", resetEmployeePassword);
 

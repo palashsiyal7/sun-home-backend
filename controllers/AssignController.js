@@ -1,7 +1,7 @@
 const asyncHandler = require("express-async-handler");
 const Assignment = require("../models/AssignmentModel");
 const Employee = require("../models/EmployeeModel");
-const _ = require('lodash'); // Make sure lodash is imported
+const _ = require("lodash"); // Make sure lodash is imported
 const { Long } = require("mongodb");
 const PatientModel = require("../models/PatientModel");
 const formatDate = require("../utils/formatDate");
@@ -40,7 +40,7 @@ const createAssignment = async (req, res) => {
       timeSlot,
       assignmentDate,
       skillLevel,
-    })
+    });
 
     res.status(201).json(assignment);
   } catch (error) {
@@ -53,7 +53,7 @@ const createAssignment = async (req, res) => {
 // @route PATCH /assignments/:id
 // @access Private
 const updateAssignment = async (req, res) => {
-  console.log('api hit');
+  console.log("api hit");
   try {
     const assignment = await Assignment.findById(req.params.id);
 
@@ -72,12 +72,13 @@ const updateAssignment = async (req, res) => {
         new: true, // Return the updated document
         runValidators: true, // Ensure that model validations run on update
       }
-    ).populate("patient", "patient_name dob address image code")
-    .populate("employee", "name role phoneNumber email")
-    .populate("timeSlot", "timeSlot_name");
+    )
+      .populate("patient", "patient_name dob address image code")
+      .populate("employee", "name role phoneNumber email")
+      .populate("timeSlot", "timeSlot_name");
 
     res.json(updatedAssignment);
-      console.log(updateAssignment);
+    console.log(updateAssignment);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -89,12 +90,15 @@ const updateAssignment = async (req, res) => {
 const getAssignments = asyncHandler(async (req, res) => {
   const assignments = await Assignment.find()
     .populate("patient", "patient_name dob address image code")
-    .populate("employee", "name role phoneNumber email ready_to_work_extra_hours")
+    .populate(
+      "employee",
+      "name role phoneNumber email ready_to_work_extra_hours"
+    )
     .populate("timeSlot", "timeSlot_name");
 
-    if (!assignments) {
-      throw new Error("Assignment not found");
-    }
+  if (!assignments) {
+    throw new Error("Assignment not found");
+  }
   res.json(assignments);
 });
 
@@ -105,7 +109,10 @@ const getAssignmentById = async (req, res) => {
   try {
     const assignment = await Assignment.findById(req.params.id)
       .populate("patient", "patient_name dob address image code")
-      .populate("employee", "name role phoneNumber email ready_to_work_extra_hours")
+      .populate(
+        "employee",
+        "name role phoneNumber email ready_to_work_extra_hours"
+      )
       .populate("timeSlot", "timeSlot_name");
 
     if (!assignment) {
@@ -122,7 +129,6 @@ const getAssignmentById = async (req, res) => {
   }
 };
 
-
 // @desc     Delete Assignment
 // @route    DELETE /api/assignments/:id
 // @access   Private
@@ -135,7 +141,6 @@ const deleteAssignment = asyncHandler(async (req, res) => {
 
   res.json(assignment);
 });
-
 
 // const getFilteredAssignments = asyncHandler(async (req, res) => {
 //   try {
@@ -163,7 +168,6 @@ const deleteAssignment = asyncHandler(async (req, res) => {
 //   }
 // });
 
-
 // const getFilteredAssignments = asyncHandler(async (req, res) => {
 //   try {
 //     const { assignmentDate:category, assignmentDate:date } = req.params;
@@ -190,7 +194,6 @@ const deleteAssignment = asyncHandler(async (req, res) => {
 //   }
 // });
 
-
 const getFilteredAssignments = asyncHandler(async (req, res) => {
   try {
     const { category, date } = req.query;
@@ -206,10 +209,16 @@ const getFilteredAssignments = asyncHandler(async (req, res) => {
     }
     if (date) {
       // Assuming date is provided in ISO format (e.g., "2024-02-20")
-      filters.assignmentDate = { $gte: new Date(date), $lt: new Date(date).setDate(new Date(date).getDate() + 1) };
+      filters.assignmentDate = {
+        $gte: new Date(date),
+        $lt: new Date(date).setDate(new Date(date).getDate() + 1),
+      };
     }
 
-    const assignments = await Assignment.find(filters).populate('employee').populate('timeSlot').populate('patient' ,'patient_name');
+    const assignments = await Assignment.find(filters)
+      .populate("employee")
+      .populate("timeSlot")
+      .populate("patient", "patient_name");
 
     if (assignments.length === 0) {
       res.json(assignments);
@@ -218,120 +227,137 @@ const getFilteredAssignments = asyncHandler(async (req, res) => {
 
     res.json(assignments);
   } catch (error) {
-    console.error('Error in getFilteredAssignments:', error);
-    res.status(500).json({ message: 'Internal server error' });
+    console.error("Error in getFilteredAssignments:", error);
+    res.status(500).json({ message: "Internal server error" });
   }
 });
 
-// for mobile view 
+// for mobile view
 const getAssignmentsByEIdAndDate = asyncHandler(async (req, res) => {
-  console.log('hit');
+  console.log("hit -----------------");
   try {
     // Extracting employeeId and optionally date from the query parameters
     const { employeeId, date } = req.query;
-
-    let formatedDate;
-
-    if(date){
-      formatedDate = formatDate(date)
-    }else{
-      formatedDate = date;
+    let formattedDate;
+    if (date) {
+      formattedDate = formatDate(date);
+    } else {
+      formattedDate = date;
     }
-
     // Create a filter object based on the employeeId
     const filters = {
       employee: employeeId, // Assuming the employee reference field in Assignment schema is named 'employee'
     };
-
     // If a date is provided, add date filtering to the query
-    if (formatedDate) {
-      // Assuming formatedDate is provided in ISO format (e.g., "2024-02-20")
+    if (formattedDate) {
+      // Assuming formattedDate is provided in ISO format (e.g., "2024-02-20")
       filters.assignmentDate = {
-        $gte: new Date(formatedDate),
-        $lt: new Date(formatedDate).setDate(new Date(formatedDate).getDate() + 1)
+        $gte: new Date(formattedDate),
+        $lt: new Date(formattedDate).setDate(
+          new Date(formattedDate).getDate() + 1
+        ),
       };
     }
-
     const assignments = await Assignment.find(filters)
-    .populate("patient", "patient_name dob address image code")
-    .populate("employee", "name role phoneNumber email ready_to_work_extra_hours")
-    .populate("timeSlot", "timeSlot_name");
+      .populate("patient", "patient_name dob address image code")
+      .populate(
+        "employee",
+        "name role phoneNumber email ready_to_work_extra_hours"
+      )
+      .populate("timeSlot", "timeSlot_name");
+
+    // Convert assignmentDate to the desired format "dd/mm/yyyy"
+    assignments.forEach((assignment) => {
+      const formattedDate = formatDateToFrontend(assignment.assignmentDate.toISOString());
+      // Add a new field for formatted assignmentDate
+      assignment.formattedAssignmentDate = formattedDate;
+    });
 
     if (assignments.length === 0) {
-      return res.status(404).json({ message: 'No assignments found matching the criteria' });
+      return res
+        .status(404)
+        .json({ message: "No assignments found matching the criteria" });
     }
 
     res.json(assignments);
+
   } catch (error) {
-    console.error('Error in getFilteredAssignments:', error);
-    res.status(500).json({ message: 'Internal server error' });
+    console.error("Error in getFilteredAssignments:", error);
+    res.status(500).json({ message: "Internal server error" });
   }
 });
 
 
+const formatDateToFrontend = (dateString) => {
+  // Assuming dateString is in ISO format
+  const dateObject = new Date(dateString);
+  const day = dateObject.getDate().toString().padStart(2, "0");
+  const month = (dateObject.getMonth() + 1).toString().padStart(2, "0");
+  const year = dateObject.getFullYear().toString();
+  // console.log(day, month, year);
+  return `${day}/${month}/${year}`;
+};
 
 
 const existingAssignments = async (req, res) => {
   try {
-      const { employeeId, timeSlotId, assignmentDate } = req.query;
-      
-      // Query assignments based on provided parameters
-      const assignments = await Assignment.find({
-          employee: employeeId,
-          timeSlot: timeSlotId,
-          assignmentDate: assignmentDate
-      });
+    const { employeeId, timeSlotId, assignmentDate } = req.query;
 
-      res.json(assignments);
+    // Query assignments based on provided parameters
+    const assignments = await Assignment.find({
+      employee: employeeId,
+      timeSlot: timeSlotId,
+      assignmentDate: assignmentDate,
+    });
+
+    res.json(assignments);
   } catch (error) {
-      console.error("Error fetching assignments:", error);
-      res.status(500).json({ error: "Failed to fetch assignments." });
+    console.error("Error fetching assignments:", error);
+    res.status(500).json({ error: "Failed to fetch assignments." });
   }
-}
-
+};
 
 const patientStatus = async (req, res) => {
   try {
-    console.log('hit');
+    console.log("hit");
     const { assignmentId, patientStatus, commentForRejection } = req.body;
 
     // Update assignment status
     const assignment = await Assignment.findByIdAndUpdate(
       assignmentId,
-      { patientStatus,commentForRejection },
+      { patientStatus, commentForRejection },
       { new: true } // Return the updated document
-    ).populate('patient timeSlot');
+    ).populate("patient timeSlot");
 
     if (!assignment) {
-      return res.status(404).json('Assignment not found');
+      return res.status(404).json("Assignment not found");
     }
 
     // If status is accepted, return required info
-    if (patientStatus === 'accepted') {
+    if (patientStatus === "accepted") {
       const patientInfo = {
         patient_name: assignment.patient.patient_name, // Assuming 'name' exists in Patient model
         code: assignment.patient.code, // Assuming 'code' exists in Patient model
         image: assignment.patient.image, // Assuming 'image' exists in Patient model
         address: assignment.patient.address, // Assuming 'address' exists in Patient model
         time: assignment.timeSlot.timeSlot_name, // Assuming 'time' exists in TimeSlot model
-        date: assignment.assignmentDate
+        date: assignment.assignmentDate,
       };
       return res.status(200).json(patientInfo);
-    } else if (patientStatus === 'rejected') {
+    } else if (patientStatus === "rejected") {
       // Handle rejected status
-      return res.status(200).json('Employee is not available: rejected');
-    
-    } else if (patientStatus === 'pending') {
+      return res.status(200).json("Employee is not available: rejected");
+    } else if (patientStatus === "pending") {
       // Handle rejected status
-      return res.status(200).json('pending');
+      return res.status(200).json("pending");
     } else {
-      return res.status(400).json('Invalid status');
+      return res.status(400).json("Invalid status");
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json('Server error');
+    res.status(500).json("Server error");
   }
-}
+};
 
 module.exports = {
   createAssignment,
@@ -342,5 +368,5 @@ module.exports = {
   getFilteredAssignments,
   existingAssignments,
   patientStatus,
-  getAssignmentsByEIdAndDate
+  getAssignmentsByEIdAndDate,
 };

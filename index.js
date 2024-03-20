@@ -40,7 +40,7 @@ app.use('/api/privacy-practices-receipt',require('./routes/NurseFormsRoutes/Reci
 app.use("/api/quick-assessment", require('./routes/NurseFormsRoutes/QuickAssessmentRoutes.js'))
 app.use('/api/patient-emergency',require('./routes/NurseFormsRoutes/PatientEmergencyRoutes.js'))
 app.use('/api/emergency-phonenumber',require('./routes/NurseFormsRoutes/EmergencyPhone.js'))
-
+app.use('/api/home-environment-safety',require('./routes/NurseFormsRoutes/HomeEnvironmentFormRoutes.js'))
 
 // Serve Swagger UI
 app.use('/api', swaggerUI.serve, swaggerUI.setup(swaggerSpec));

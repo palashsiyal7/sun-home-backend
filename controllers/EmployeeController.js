@@ -7,16 +7,17 @@ const EmployeeModel = require("../models/EmployeeModel");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 // const CompanyModel = require("../models/CompanyModel");
-const Company = require('../models/CompanyModel');
+const Company = require("../models/CompanyModel");
 const ObjectId = mongoose.Types.ObjectId;
 const TimeSlot = require("../models/TimeSlotModel");
-
 
 // Get all employee
 const getEmployees = asyncHandler(async (req, res) => {
   try {
     // const employees = await Employee.find({}, { password: 0 }).populate("timeSlots");
-    const employees = await Employee.find({}).populate("timeSlots");
+    const employees = await Employee.find({}).populate("timeSlots")
+      .populate("companies");
+
     // const employees = await Employee.find({})
     // Exclude the password field from the response
     res.status(200).json(employees);
@@ -31,8 +32,12 @@ const getEmployeeById = asyncHandler(async (req, res) => {
   try {
     const employeeId = req.params.id;
 
-    // const employee = await Employee.findById(employeeId).select({ password: 0 }).populate("timeSlots");
-    const employee = await Employee.findById(employeeId).populate("timeSlots");
+    // const employee = await Employee.findById(employeeId).select({ password: 0 }).populate("timeSlots")
+      // .populate("companies");
+;
+    const employee = await Employee.findById(employeeId).populate("timeSlots")
+      .populate("companies");
+;
     // Exclude the password field from the response
     if (!employee) {
       res.status(404).json({ error: "Employee not found" });
@@ -44,7 +49,6 @@ const getEmployeeById = asyncHandler(async (req, res) => {
     res.status(500).json({ message: "Failed to fetch employee" });
   }
 });
-
 
 // Add new employee
 const createEmployee = asyncHandler(async (req, res) => {
@@ -64,7 +68,7 @@ const createEmployee = asyncHandler(async (req, res) => {
       availability,
       timeSlots,
       image,
-      units
+      units,
     } = req.body;
 
     if (
@@ -119,7 +123,7 @@ const createEmployee = asyncHandler(async (req, res) => {
       availability,
       timeSlots,
       image,
-      units
+      units,
     });
 
     res.status(201).json({
@@ -389,7 +393,9 @@ const fetchEmployees = async (req, res) => {
     // console.log(timeSlotId, role, date, "query");
     // Prepare query to filter employees based on role
 
-    const employee = await Employee.findOne({timeSlots: timeSlotId}).populate("timeSlots");
+    const employee = await Employee.findOne({ timeSlots: timeSlotId }).populate(
+      "timeSlots"
+    );
     const roleQuery = role ? { role } : {};
 
     const timeSlot = await TimeSlot.findById(timeSlotId);
@@ -430,18 +436,16 @@ const fetchEmployees = async (req, res) => {
         _id: employee._id,
         name: employee.name,
         role: employee.role,
-        timeSlot_name: timeSlot.timeSlot_name
+        timeSlot_name: timeSlot.timeSlot_name,
       }));
-    
-      console.log("available employees",availableEmployees );
+
+    console.log("available employees", availableEmployees);
     res.json(availableEmployees);
   } catch (error) {
     console.error(error);
-    res
-      .status(500)
-      .json({
-        message: "Failed to fetch employees for the selected time slot.",
-      });
+    res.status(500).json({
+      message: "Failed to fetch employees for the selected time slot.",
+    });
   }
 };
 // employee signin
@@ -514,8 +518,8 @@ const employeeSignin = asyncHandler(async (req, res) => {
     // Populate the employee document with company details for the response
     // This assumes you've refetched or otherwise have access to the populated details
     employee = await Employee.findOne({ email }).populate({
-      path: 'companies',
-      select: 'company_name' // Adjust according to your schema
+      path: "companies",
+      select: "company_name", // Adjust according to your schema
     });
 
     res.status(200).json({
@@ -524,9 +528,9 @@ const employeeSignin = asyncHandler(async (req, res) => {
       employee: {
         id: employee._id,
         email: employee.email,
-        companies: employee.companies.map(company => ({
+        companies: employee.companies.map((company) => ({
           id: company._id, // or company.id based on your schema
-          company_name: company.company_name
+          company_name: company.company_name,
         })),
         role: employee.role,
       },
@@ -536,8 +540,6 @@ const employeeSignin = asyncHandler(async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-
-
 
 // reset password
 const resetEmployeePassword = asyncHandler(async (req, res) => {
@@ -571,8 +573,6 @@ const resetEmployeePassword = asyncHandler(async (req, res) => {
   }
 });
 
-
-
 const setEmployeeToggle = asyncHandler(async (req, res) => {
   const employeeId = req.body.employeeId;
   const isReadyForExtraHours = req.body.ready_to_work_extra_hours;
@@ -600,13 +600,19 @@ const setEmployeeToggle = asyncHandler(async (req, res) => {
 
 const updateEmployee = async (req, res) => {
   try {
-    const updatedEmployee = await Employee.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-      runValidators: true,
-    });
+    const updatedEmployee = await Employee.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      {
+        new: true,
+        runValidators: true,
+      }
+    )
+      .populate("timeSlots")
+      .populate("companies");
 
     if (!updatedEmployee) {
-      return res.status(404).json({ message: 'Employee not found' });
+      return res.status(404).json({ message: "Employee not found" });
     }
 
     res.status(200).json(updatedEmployee);

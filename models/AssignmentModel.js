@@ -12,6 +12,7 @@ const AssignmentSchema = new mongoose.Schema({
       enum: ['pending', 'accepted', 'rejected']
     },
     commentForRejection: String,
+    formattedAssignmentDate : String,
     employee: {
       type: mongoose.Schema.Types.ObjectId, 
       ref: 'Employee',
