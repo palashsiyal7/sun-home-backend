@@ -1,21 +1,22 @@
 const asyncHandler = require("express-async-handler");
-const EmergencyPhoneFormModel = require("../../models/NurseFormsModels/EmergencyPhoneModel");
+const NursingAssesmentModel = require("../../models/NurseFormsModels/NursingAssesmentModel.js");
 const formatDate = require("../../utils/formatDate");
 
 // Create Emergency phoneNumber Info
 const createForm = asyncHandler(async (req, res) => {
   try {
     const formattedBody = { ...req.body };
-    ["homeSafetyEvaluationDate"].forEach((field) => {
+    ["dateOfSignature", "hospitalizedFrom", "hospitalizedTo"].forEach((field) => {
       if (formattedBody[field]) {
         formattedBody[field] = formatDate(formattedBody[field]);
       }
     });
-    const emergencyPhoneInfo = new EmergencyPhoneFormModel(formattedBody);
+    const nursingAssesmentFormInfo = new NursingAssesmentModel(formattedBody);
 
-    // const emergencyPhoneInfo = new EmergencyPhoneFormModel(req.body);
-    const createdemergencyPhoneInfo = await emergencyPhoneInfo.save();
-    res.status(200).json(createdemergencyPhoneInfo);
+    // const nursingAssesmentFormInfo = new NursingAssesmentModel(req.body);
+
+    const createdFormData = await nursingAssesmentFormInfo.save();
+    res.status(200).json(createdFormData);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -24,8 +25,8 @@ const createForm = asyncHandler(async (req, res) => {
 // Get All Emergency phoneNumber Infos
 const getAllForms = asyncHandler(async (req, res) => {
   try {
-    const emergencyPhoneInfos = await EmergencyPhoneFormModel.find({});
-    res.status(200).json(emergencyPhoneInfos);
+    const nursingAssesmentInfo = await NursingAssesmentModel.find({});
+    res.status(200).json(nursingAssesmentInfo);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -33,10 +34,10 @@ const getAllForms = asyncHandler(async (req, res) => {
 
 // Get Emergency phoneNumber Info by ID
 const getFormById = asyncHandler(async (req, res) => {
-  const emergencyPhoneInfo = await EmergencyPhoneFormModel.findById(req.params.id);
+  const nursingAssesmentFormInfo = await NursingAssesmentModel.findById(req.params.id);
 
-  if (emergencyPhoneInfo) {
-    res.status(200).json(emergencyPhoneInfo);
+  if (nursingAssesmentFormInfo) {
+    res.status(200).json(nursingAssesmentFormInfo);
   } else {
     res.status(404).json({ message: "Emergency phoneNumber info not found" });
   }
@@ -45,11 +46,11 @@ const getFormById = asyncHandler(async (req, res) => {
 // Update Emergency phoneNumber Info
 const updateForm = asyncHandler(async (req, res) => {
   try {
-    const patientEmergencyInfo = await EmergencyPhoneFormModel.findById(req.params.id);
-    if (patientEmergencyInfo) {
-      // Update the entire patientEmergencyInfo object with req.body
-      Object.assign(patientEmergencyInfo, req.body);
-      const updatedPatientEmergencyFormData = await patientEmergencyInfo.save();
+    const nursingAssesmentFormInfo = await NursingAssesmentModel.findById(req.params.id);
+    if (nursingAssesmentFormInfo) {
+      // Update the entire nursingAssesmentFormInfo object with req.body
+      Object.assign(nursingAssesmentFormInfo, req.body);
+      const updatedPatientEmergencyFormData = await nursingAssesmentFormInfo.save();
       res.status(200).json(updatedPatientEmergencyFormData);
     } else {
       res.status(404).json({ message: "Home environmental info not found" });
@@ -62,11 +63,11 @@ const updateForm = asyncHandler(async (req, res) => {
 // Delete Emergency phoneNumber Info
 const deleteForm = asyncHandler(async (req, res) => {
   try {
-    const emergencyPhoneInfo = await EmergencyPhoneFormModel.findById(req.params.id);
+    const nursingAssesmentFormInfo = await NursingAssesmentModel.findById(req.params.id);
 
-    if (emergencyPhoneInfo) {
-      // await emergencyPhoneInfo.remove();
-      await emergencyPhoneInfo.deleteOne({ _id: req.params.id });
+    if (nursingAssesmentFormInfo) {
+      // await nursingAssesmentFormInfo.remove();
+      await nursingAssesmentFormInfo.deleteOne({ _id: req.params.id });
 
       res.status(200).json({ message: "Emergency phoneNumber info removed" });
     } else {
@@ -80,15 +81,15 @@ const deleteForm = asyncHandler(async (req, res) => {
 // Get Emergency phoneNumber Info by assignmentId
 const getFormByAssignmentId = asyncHandler(async (req, res) => {
   try {
-    const emergencyPhoneInfo = await EmergencyPhoneFormModel.findOne({
+    const nursingAssesmentFormInfo = await NursingAssesmentModel.findOne({
       assignmentId: req.params.assignmentId,
     });
 
-    if (emergencyPhoneInfo) {
-      res.status(200).json(emergencyPhoneInfo);
+    if (nursingAssesmentFormInfo) {
+      res.status(200).json(nursingAssesmentFormInfo);
     } else {
       res.status(404).json({
-        message: "Emergency phoneNumber info with given assignmentId not found",
+        message: "Nursing Assesment form info with given assignmentId not found",
       });
     }
   } catch (error) {
@@ -101,18 +102,18 @@ const updateFormByAssignmentId = asyncHandler(async (req, res) => {
   try {
     const assignmentId = req.params.id;
     console.log(
-      "updateFormByAssignmentId-confidential-info-Controller api hit"
+      "Nursing Assesment Controller api hit"
     );
     console.log(req.body);
 
-    const emergecyPhoneData = await EmergencyPhoneFormModel.findOne({ assignmentId });
+    const emergecyPhoneData = await NursingAssesmentModel.findOne({ assignmentId });
 
     if (!emergecyPhoneData) {
       res.status(404);
       throw new Error("not form found on this assignment id");
     }
     // Make sure to use the $set operator to specify the fields to update
-    const updatedemergencyPhoneInfo = await EmergencyPhoneFormModel.findOneAndUpdate(
+    const updatedemergencyPhoneInfo = await NursingAssesmentModel.findOneAndUpdate(
       { assignmentId }, // Filter by assignmentId
       req.body, // Use $set to update the document fields with req.body
       { new: true } // Return the updated document and run validators
@@ -126,20 +127,20 @@ const updateFormByAssignmentId = asyncHandler(async (req, res) => {
 // Delete Emergency phoneNumber Info by assignmentId
 const deleteFormByAssignmentId = asyncHandler(async (req, res) => {
   try {
-    const emergencyPhoneInfo = await EmergencyPhoneFormModel.findOne({
+    const nursingAssesmentFormInfo = await NursingAssesmentModel.findOne({
       assignmentId: req.params.assignmentId,
     });
-    if (emergencyPhoneInfo) {
-      await emergencyPhoneInfo.deleteOne({
+    if (nursingAssesmentFormInfo) {
+      await nursingAssesmentFormInfo.deleteOne({
         assignmentId: req.params.assignmentId,
       });
-      // await emergencyPhoneInfo.remove();
+      // await nursingAssesmentFormInfo.remove();
       res
         .status(200)
-        .json({ message: "Emergency phoneNumber info with given assignmentId removed" });
+        .json({ message: "Nursing Assesment info with given assignmentId removed" });
     } else {
       res.status(404).json({
-        message: "Emergency phoneNumber info with given assignmentId not found",
+        message: "Nursing Assesment info with given assignmentId not found",
       });
     }
   } catch (error) {

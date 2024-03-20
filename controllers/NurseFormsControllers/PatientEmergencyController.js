@@ -1,5 +1,5 @@
 const asyncHandler = require("express-async-handler");
-const patientEmergencyModel = require("../../models/NurseFormsModels/PatientEmergencyModel");
+const passportSupervisoryReport = require("../../models/NurseFormsModels/PassportSupervisoryReportModel");
 const formatDate = require("../../utils/formatDate");
 
 // Create Confidential Info
@@ -11,12 +11,11 @@ const createForm = asyncHandler(async (req, res) => {
         formattedBody[field] = formatDate(formattedBody[field]);
       }
     });
-    const confidentialInfo = new patientEmergencyModel(formattedBody);
+    const patientEmergencyInfo = new patientEmergencyModel(formattedBody);
 
-
-    // const confidentialInfo = new patientEmergencyModel(req.body);
-    const createdConfidentialInfo = await confidentialInfo.save();
-    res.status(200).json(createdConfidentialInfo);
+    // const patientEmergencyInfo = new patientEmergencyModel(req.body);
+    const createdpatientEmergencyInfo = await patientEmergencyInfo.save();
+    res.status(200).json(createdpatientEmergencyInfo);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -25,8 +24,8 @@ const createForm = asyncHandler(async (req, res) => {
 // Get All Confidential Infos
 const getAllForms = asyncHandler(async (req, res) => {
   try {
-    const confidentialInfos = await patientEmergencyModel.find({});
-    res.status(200).json(confidentialInfos);
+    const patientEmergencyInfos = await patientEmergencyModel.find({});
+    res.status(200).json(patientEmergencyInfos);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -34,53 +33,21 @@ const getAllForms = asyncHandler(async (req, res) => {
 
 // Get Confidential Info by ID
 const getFormById = asyncHandler(async (req, res) => {
-  const confidentialInfo = await patientEmergencyModel.findById(req.params.id);
-
-  if (confidentialInfo) {
-    res.status(200).json(confidentialInfo);
+  const patientEmergencyInfo = await patientEmergencyModel.findById(req.params.id);
+  if (patientEmergencyInfo) {
+    res.status(200).json(patientEmergencyInfo);
   } else {
     res.status(404).json({ message: "Confidential info not found" });
-  }
-});
-
-// Update Confidential Info
-const updateForm = asyncHandler(async (req, res) => {
-  try {
-    const confidentialInfo = await patientEmergencyModel.findById(req.params.id);
-
-    if (confidentialInfo) {
-      confidentialInfo.patientSignature =
-        req.body.patientSignature || confidentialInfo.patientSignature;
-      confidentialInfo.patientName =
-        req.body.patientName || confidentialInfo.patientName;
-      confidentialInfo.patientDate =
-        req.body.patientDate || confidentialInfo.patientDate;
-      confidentialInfo.clinicianSignature =
-        req.body.clinicianSignature || confidentialInfo.clinicianSignature;
-      confidentialInfo.clinicianName =
-        req.body.clinicianName || confidentialInfo.clinicianName;
-      confidentialInfo.clinicianDate =
-        req.body.clinicianDate || confidentialInfo.clinicianDate;
-
-      const updatedConfidentialInfo = await confidentialInfo.save();
-      res.status(200).json(updatedConfidentialInfo);
-    } else {
-      res.status(404).json({ message: "Confidential info not found" });
-    }
-  } catch (error) {
-    res.status(500).json({ message: error.message });
   }
 });
 
 // Delete Confidential Info
 const deleteForm = asyncHandler(async (req, res) => {
   try {
-    const confidentialInfo = await patientEmergencyModel.findById(req.params.id);
-
-    if (confidentialInfo) {
-      // await confidentialInfo.remove();
-      await confidentialInfo.deleteOne({ _id: req.params.id });
-
+    const patientEmergencyInfo = await patientEmergencyModel.findById(req.params.id);
+    if (patientEmergencyInfo) {
+      // await patientEmergencyInfo.remove();
+      await patientEmergencyInfo.deleteOne({ _id: req.params.id });
       res.status(200).json({ message: "Confidential info removed" });
     } else {
       res.status(404).json({ message: "Confidential info not found" });
@@ -92,13 +59,13 @@ const deleteForm = asyncHandler(async (req, res) => {
 
 // Get Confidential Info by assignmentId
 const getFormByAssignmentId = asyncHandler(async (req, res) => {
+  console.log('id httt');
   try {
-    const confidentialInfo = await patientEmergencyModel.findOne({
+    const patientEmergencyInfo = await patientEmergencyModel.findOne({
       assignmentId: req.params.assignmentId,
     });
-
-    if (confidentialInfo) {
-      res.status(200).json(confidentialInfo);
+    if (patientEmergencyInfo) {
+      res.status(200).json(patientEmergencyInfo);
     } else {
       res.status(404).json({
         message: "Confidential info with given assignmentId not found",
@@ -109,28 +76,43 @@ const getFormByAssignmentId = asyncHandler(async (req, res) => {
   }
 });
 
+//UPDATE BY ID
+const updateForm = asyncHandler(async (req, res) => {
+  try {
+    const patientEmergencyInfo = await patientEmergencyModel.findById(req.params.id);
+    if (patientEmergencyInfo) {
+      // Update the entire patientEmergencyInfo object with req.body
+      Object.assign(patientEmergencyInfo, req.body);
+      const updatedPatientEmergencyFormData = await patientEmergencyInfo.save();
+      res.status(200).json(updatedPatientEmergencyFormData);
+    } else {
+      res.status(404).json({ message: "Home environmental info not found" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 // Update Confidential Info by assignmentId
 const updateFormByAssignmentId = asyncHandler(async (req, res) => {
   try {
     const assignmentId = req.params.id;
-    console.log(
-      "updateFormByAssignmentId-confidential-info-Controller api hit"
-    );
-    console.log(req.body);
-
-    const confidentialForm = await patientEmergencyModel.findOne({ assignmentId });
-
-    if (!confidentialForm) {
+    // console.log(
+    //   "updateFormByAssignmentId-confidential-info-Controller api hit"
+    // );
+    // console.log(req.body);
+    const patientEmergencyFormData = await patientEmergencyModel.findOne({ assignmentId });
+    if (!patientEmergencyFormData) {
       res.status(404);
       throw new Error("not form found on this assignment id");
     }
     // Make sure to use the $set operator to specify the fields to update
-    const updatedConfidentialInfo = await patientEmergencyModel.findOneAndUpdate(
+    const updatedpatientEmergencyInfo = await patientEmergencyModel.findOneAndUpdate(
       { assignmentId }, // Filter by assignmentId
       req.body, // Use $set to update the document fields with req.body
       { new: true } // Return the updated document and run validators
     );
-    res.status(200).json(updatedConfidentialInfo);
+    res.status(200).json(updatedpatientEmergencyInfo);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -139,15 +121,14 @@ const updateFormByAssignmentId = asyncHandler(async (req, res) => {
 // Delete Confidential Info by assignmentId
 const deleteFormByAssignmentId = asyncHandler(async (req, res) => {
   try {
-    const confidentialInfo = await patientEmergencyModel.findOne({
+    const patientEmergencyInfo = await patientEmergencyModel.findOne({
       assignmentId: req.params.assignmentId,
     });
-
-    if (confidentialInfo) {
-      await confidentialInfo.deleteOne({
+    if (patientEmergencyInfo) {
+      await patientEmergencyInfo.deleteOne({
         assignmentId: req.params.assignmentId,
       });
-      // await confidentialInfo.remove();
+      // await patientEmergencyInfo.remove();
       res
         .status(200)
         .json({ message: "Confidential info with given assignmentId removed" });

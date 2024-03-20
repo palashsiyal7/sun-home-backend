@@ -9,7 +9,7 @@ const {
     getFormByAssignmentId,
     updateFormByAssignmentId,
     deleteFormByAssignmentId,
-} = require("../../controllers/NurseFormsControllers/HomeEnvFormController.js");
+} = require("../../controllers/NurseFormsControllers/NursingAssesmentController");
 
 // this routes will be used in frontend
 router.post("/", createForm);

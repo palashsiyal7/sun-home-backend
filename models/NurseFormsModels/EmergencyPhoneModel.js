@@ -44,8 +44,6 @@ const emergencyPhoneSchema = new mongoose.Schema({
   personalEmergencyResponseSystemHas: Boolean,
   personalEmergencyResponseSystemDetails: String,
 
-  emergencyContactPhone: String,
-
   water: Boolean,
   foodSupply3Days: Boolean,
   radioBatteryOperated: Boolean,

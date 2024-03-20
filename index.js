@@ -37,10 +37,13 @@ app.use("/api/patientprior", require('./routes/NurseFormsRoutes/PatientPrioritiz
 app.use("/api/policies", require('./routes/NurseFormsRoutes/PolicyOnConfidentialityRoutes.js'))
 app.use('/api/privacy-practices-receipt',require('./routes/NurseFormsRoutes/RecieptOfNoticeRoutes.js'))
 
+//phase 2 forms
 app.use("/api/quick-assessment", require('./routes/NurseFormsRoutes/QuickAssessmentRoutes.js'))
 app.use('/api/patient-emergency',require('./routes/NurseFormsRoutes/PatientEmergencyRoutes.js'))
 app.use('/api/emergency-phonenumber',require('./routes/NurseFormsRoutes/EmergencyPhone.js'))
 app.use('/api/home-environment-safety',require('./routes/NurseFormsRoutes/HomeEnvironmentFormRoutes.js'))
+app.use('/api/passport-supervisory',require('./routes/NurseFormsRoutes/PassportSupervisoryRoutes.js'))
+app.use('/api/nursing-assesment',require('./routes/NurseFormsRoutes/NursingAssesmentRoutes.js'))
 
 // Serve Swagger UI
 app.use('/api', swaggerUI.serve, swaggerUI.setup(swaggerSpec));

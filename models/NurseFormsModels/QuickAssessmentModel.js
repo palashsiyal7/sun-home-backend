@@ -14,12 +14,11 @@ const QuickAssessmentSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
-  TUGTest: {
-    // Timed Up and Go Test
-    firstTrial: Number,
-    secondTrial: Number,
-    average: Number,
-  },
+  // Timed Up and Go Test
+  TUGTestFirstTrial: Number,
+  TUGTestSecondTrial: Number,
+  TUGTestAverage: Number,
+
   stability: {
     type: String,
     enum: ["Good", "Fair", "Poor"],
