@@ -1,5 +1,5 @@
 const asyncHandler = require("express-async-handler");
-const passportSupervisoryReport = require("../../models/NurseFormsModels/PassportSupervisoryReportModel");
+const patientEmergencyModel = require("../../models/NurseFormsModels/PatientEmergencyModel");
 const formatDate = require("../../utils/formatDate");
 
 // Create Confidential Info
