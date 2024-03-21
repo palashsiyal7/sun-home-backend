@@ -483,8 +483,10 @@ const fetchEmployees = async (req, res) => {
 //   }
 // });
 
+
+// --- company name
 const employeeSignin = asyncHandler(async (req, res) => {
-  const { email, password, companies: companyName } = req.body;
+  const { email, password, company: companyName } = req.body;
 
   try {
     // Find the employee by email
@@ -506,7 +508,7 @@ const employeeSignin = asyncHandler(async (req, res) => {
     }
 
     // Update the employee with the found company's ID
-    employee.companies = [company._id]; // Assuming companies field can store multiple companies
+    employee.company = company._id; // Assuming company field can store multiple company
     await employee.save();
 
     const token = jwt.sign(
@@ -518,7 +520,7 @@ const employeeSignin = asyncHandler(async (req, res) => {
     // Populate the employee document with company details for the response
     // This assumes you've refetched or otherwise have access to the populated details
     employee = await Employee.findOne({ email }).populate({
-      path: "companies",
+      path: "company",
       select: "company_name", // Adjust according to your schema
     });
 
@@ -528,18 +530,79 @@ const employeeSignin = asyncHandler(async (req, res) => {
       employee: {
         id: employee._id,
         email: employee.email,
-        companies: employee.companies.map((company) => ({
-          id: company._id, // or company.id based on your schema
-          company_name: company.company_name,
-        })),
+        company: employee.company ? {
+          id: employee.company._id.toString(), // Converting ObjectId to String
+          company_name: employee.company.company_name,
+        } : null, // Handle case where company might not be populated
         role: employee.role,
       },
     });
+    
   } catch (error) {
     console.error("Error during sign-in:", error);
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).json({ error: "Internal server error" , error});
   }
 });
+
+
+// const employeeSignin = asyncHandler(async (req, res) => {
+//   const { email, password, company: companyId } = req.body;
+
+//   if (!email) {
+//     return res.status(400).json({ error: "Email is required" });
+//   }
+
+//   if (!password) {
+//     return res.status(400).json({ error: "Password is required" });
+//   }
+
+//   if (!companyId) {
+//     return res.status(400).json({ error: "Company ID is required" });
+//   }
+
+//   // Check if the company exists
+//   const companyExists = await Company.findById(companyId);
+//   if (!companyExists) {
+//     return res.status(404).json({ error: "Company not found" });
+//   }
+
+//   // Find the employee by email and password
+//   let employee = await Employee.findOne({ email, password });
+//   if (!employee) {
+//     return res.status(401).json({ error: "Invalid credentials" });
+//   }
+
+//   // Update the employee's company association
+//   employee.company = companyId;
+//   await employee.save();
+
+//   // Optionally populate the company details
+//   employee = await Employee.findOne({ _id: employee._id }).populate({
+//     path: "company",
+//     select: "company_name",
+//   });
+
+//   const token = jwt.sign(
+//     { email: employee.email, userId: employee._id },
+//     "your-secret-key",
+//     { expiresIn: "1h" }
+//   );
+
+//   res.status(200).json({
+//     message: "Success, Employee signed in successfully",
+//     token,
+//     employee: {
+//       id: employee._id,
+//       email: employee.email,
+//       company: employee.company ? {
+//         id: employee.company._id.toString(),
+//         company_name: employee.company.company_name,
+//       } : null,
+//       role: employee.role,
+//     },
+//   });
+// });
+
 
 // reset password
 const resetEmployeePassword = asyncHandler(async (req, res) => {

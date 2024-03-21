@@ -67,7 +67,7 @@ const EmployeeSchema = mongoose.Schema(
     image: {
       type: String,
     },
-    companies: 
+    company: 
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Company",

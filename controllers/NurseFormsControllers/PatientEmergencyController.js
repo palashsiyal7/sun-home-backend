@@ -2,7 +2,7 @@ const asyncHandler = require("express-async-handler");
 const patientEmergencyModel = require("../../models/NurseFormsModels/PatientEmergencyModel");
 const formatDate = require("../../utils/formatDate");
 
-// Create Confidential Info
+// Create Patient Emergency Info
 const createForm = asyncHandler(async (req, res) => {
   try {
     const formattedBody = { ...req.body };
@@ -21,7 +21,7 @@ const createForm = asyncHandler(async (req, res) => {
   }
 });
 
-// Get All Confidential Infos
+// Get All Patient Emergency Infos
 const getAllForms = asyncHandler(async (req, res) => {
   try {
     const patientEmergencyInfos = await patientEmergencyModel.find({});
@@ -31,33 +31,33 @@ const getAllForms = asyncHandler(async (req, res) => {
   }
 });
 
-// Get Confidential Info by ID
+// Get Patient Emergency Info by ID
 const getFormById = asyncHandler(async (req, res) => {
   const patientEmergencyInfo = await patientEmergencyModel.findById(req.params.id);
   if (patientEmergencyInfo) {
     res.status(200).json(patientEmergencyInfo);
   } else {
-    res.status(404).json({ message: "Confidential info not found" });
+    res.status(404).json({ message: "Patient Emergency info not found" });
   }
 });
 
-// Delete Confidential Info
+// Delete Patient Emergency Info
 const deleteForm = asyncHandler(async (req, res) => {
   try {
     const patientEmergencyInfo = await patientEmergencyModel.findById(req.params.id);
     if (patientEmergencyInfo) {
       // await patientEmergencyInfo.remove();
       await patientEmergencyInfo.deleteOne({ _id: req.params.id });
-      res.status(200).json({ message: "Confidential info removed" });
+      res.status(200).json({ message: "Patient Emergency info removed" });
     } else {
-      res.status(404).json({ message: "Confidential info not found" });
+      res.status(404).json({ message: "Patient Emergency info not found" });
     }
   } catch(error) {
     res.status(500).json({ message: error.message });
   }
 });
 
-// Get Confidential Info by assignmentId
+// Get Patient Emergency Info by assignmentId
 const getFormByAssignmentId = asyncHandler(async (req, res) => {
   console.log('id httt');
   try {
@@ -68,7 +68,7 @@ const getFormByAssignmentId = asyncHandler(async (req, res) => {
       res.status(200).json(patientEmergencyInfo);
     } else {
       res.status(404).json({
-        message: "Confidential info with given assignmentId not found",
+        message: "Patient Emergency info with given assignmentId not found",
       });
     }
   } catch (error) {
@@ -93,12 +93,12 @@ const updateForm = asyncHandler(async (req, res) => {
   }
 });
 
-// Update Confidential Info by assignmentId
+// Update Patient Emergency Info by assignmentId
 const updateFormByAssignmentId = asyncHandler(async (req, res) => {
   try {
     const assignmentId = req.params.id;
     // console.log(
-    //   "updateFormByAssignmentId-confidential-info-Controller api hit"
+    //   "updateFormByAssignmentId-Patient Emergency-info-Controller api hit"
     // );
     // console.log(req.body);
     const patientEmergencyFormData = await patientEmergencyModel.findOne({ assignmentId });
@@ -118,7 +118,7 @@ const updateFormByAssignmentId = asyncHandler(async (req, res) => {
   }
 });
 
-// Delete Confidential Info by assignmentId
+// Delete Patient Emergency Info by assignmentId
 const deleteFormByAssignmentId = asyncHandler(async (req, res) => {
   try {
     const patientEmergencyInfo = await patientEmergencyModel.findOne({
@@ -131,10 +131,10 @@ const deleteFormByAssignmentId = asyncHandler(async (req, res) => {
       // await patientEmergencyInfo.remove();
       res
         .status(200)
-        .json({ message: "Confidential info with given assignmentId removed" });
+        .json({ message: "Patient Emergency info with given assignmentId removed" });
     } else {
       res.status(404).json({
-        message: "Confidential info with given assignmentId not found",
+        message: "Patient Emergency info with given assignmentId not found",
       });
     }
   } catch (error) {

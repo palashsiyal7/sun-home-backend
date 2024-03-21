@@ -153,7 +153,6 @@ const patientEmergencySchema = new mongoose.Schema({
   },
 
   // page 2
-  emergencyPrepardness: String,
   water: Boolean,
   foodSupplyFor3D: Boolean,
   batteryOperatedRadio: Boolean,
@@ -182,18 +181,19 @@ const patientEmergencySchema = new mongoose.Schema({
     type:String,
     enum: ['Relative', 'Friend'] 
   },
-  evacuationContactName: { // radio button relative/friend
+  evacuationContactNameAndPhone: { // radio button relative/friend
     type: String,
     required: [false, "Evacuation contact name is required if evacuation is necessary"],
   },
 
-
-  evacuationContactPhone: {
-    type: String,
-    required: [false, "Evacuation contact phone number is required if evacuation is necessary"],
-  },
+  //-----
+  // evacuationContactPhone: {
+  //   type: String,
+  //   required: [false, "Evacuation contact phone number is required if evacuation is necessary"],
+  // },
+  //--------
+  
   nextTOKinName: String,
-
 
   hospitalOfChoiceName: {
     type: String,
@@ -211,14 +211,19 @@ const patientEmergencySchema = new mongoose.Schema({
     type: String,
     required: [false, "Pharmacy name is required"],
   },
-  pharmacyAddress: {
+  pharmacyAddressAndPhone: {
     type: String,
     required: [false, "Pharmacy address is required"],
   },
-  pharmacyPhone: {
-    type: String,
-    required: [false, "Pharmacy phone number is required"],
-  },
+
+
+  // -------
+  // pharmacyPhone: { 
+  //   type: String,
+  //   required: [false, "Pharmacy phone number is required"],
+  // },//------
+
+
   fireDepartmentPhone: {
     type: String,
     required: [false, "Fire department phone number is required"],
