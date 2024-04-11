@@ -456,7 +456,6 @@ const createPatient = async (req, res) => {
       other_transportationEveryVisit,
       other_transportationWeekly,
       other_otherInfo,
-
       // ... include other fields as needed
     });
 

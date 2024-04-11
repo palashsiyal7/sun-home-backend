@@ -11,7 +11,7 @@ const {
 } = require("../controllers/UnitController");
 
 router.route("/").get(getUnits).post(createUnit);
-router.route("/:id").get(getUnitById).put(updateUnitName).delete(deleteUnit).put(updateUnit);
+router.route("/:id").get(getUnitById).delete(deleteUnit).put(updateUnit);
 router
   .route("/:unitId/programs")
   .post(addProgramsToLocation)

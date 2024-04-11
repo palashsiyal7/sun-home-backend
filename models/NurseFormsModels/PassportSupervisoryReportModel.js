@@ -71,7 +71,7 @@ const passportSupervisoryReportSchema = new mongoose.Schema({
     enum: ["Unchanged", "Improved", "Changed"],
     required: false,
   },
-  medicalComment: String,
+  medicalStatusComment: String,
 
   mentalStatus: {
     type: String,
@@ -100,17 +100,12 @@ const passportSupervisoryReportSchema = new mongoose.Schema({
     required: false,
   },
   skinComment: String,
-
   nursingCarePlanReviewedWithClientCaregiver: String,
-
   serviceCarePlanReviewedWithClientCaregiver: String,
-
   hhaPresent: String,
   listTypeOfService: String,
-
   hhaHmName: String,
   hhaHmTitle: String,
-
   comments: String,
   clientSignature: String,
   supervisorSignature: String,

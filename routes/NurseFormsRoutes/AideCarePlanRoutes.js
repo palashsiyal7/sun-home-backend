@@ -9,18 +9,18 @@ const {
     getFormByAssignmentId,
     updateFormByAssignmentId,
     deleteFormByAssignmentId,
-} = require("../../controllers/NurseFormsControllers/ConfidentialInfoController");
+} = require("../../controllers/NurseFormsControllers/AideCareController.js");
 
 // this routes will be used in frontend
 router.post("/", createForm);
 router.get("/", getAllForms);
 router.get('/assignment/:assignmentId', getFormByAssignmentId )
-router.put("/assignment/:id", updateFormByAssignmentId);
+router.put("/assignment/:assignmentId", updateFormByAssignmentId);
 router.delete("/assignment/:assignmentId", deleteFormByAssignmentId);
 
 // for postman testing only
 router.get("/:id", getFormById);
 router.delete("/:id", deleteForm);
-// router.put("/:id", updateForm);
+router.put("/:id", updateForm);
 
 module.exports = router;

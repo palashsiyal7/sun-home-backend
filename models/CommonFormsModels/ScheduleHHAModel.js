@@ -8,6 +8,8 @@ const ScheduleSchema = new mongoose.Schema({
   patientId: String,
   clientName: String,
   weekStartingDate: Date,
+  startTime:String,
+  endTime: String,
   days: {
     sunday: { startTime: String, endTime: String },
     monday: { startTime: String, endTime: String },

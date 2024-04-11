@@ -49,6 +49,7 @@ const createUnit = asyncHandler(async (req, res) => {
 
 // Update unit_name
 const updateUnitName = asyncHandler(async (req, res) => {
+  console.log(req.body)
   const unitId = req.params.id;
   const { name } = req.body;
 
@@ -77,16 +78,45 @@ const updateUnitName = asyncHandler(async (req, res) => {
   }
 });
 
+// const updateUnit = async (req, res) => {
+//   console.log(req.body, 'sdfsdfsdf')
+//   const { id } = req.params; // Extract unit ID from URL params
+//   const { unit_name, programs } = req.body; // Extract updated data from request body
+
+//   try {
+//     // Use Mongoose to find the unit by its ID and update its fields
+//     const updatedUnit = await Unit.findByIdAndUpdate(
+//       id,
+//       { unit_name, programs },
+//       { new: true } // Return the updated unit
+//     );
+
+//     if (!updatedUnit) {
+//       return res.status(404).json({ message: "Unit not found" });
+//     }
+
+//     res.status(200).json({ message: "Unit updated successfully", unit: updatedUnit });
+//   } catch (error) {
+//     console.error("Error updating unit:", error.message);
+//     res.status(500).json({ message: "Internal server error" });
+//   }
+// }
+
+
 const updateUnit = async (req, res) => {
+  console.log(req.body, 'sdfsdfsdf');
   const { id } = req.params; // Extract unit ID from URL params
-  const { unit_name, programs } = req.body; // Extract updated data from request body
+  const { name, programIds } = req.body; // Extract updated data from request body
 
   try {
     // Use Mongoose to find the unit by its ID and update its fields
     const updatedUnit = await Unit.findByIdAndUpdate(
       id,
-      { unit_name, programs },
-      { new: true } // Return the updated unit
+      {
+        unit_name: { _id: name, company_name: name }, // Update unit_name field
+        programs: programIds.map((programId) => ({ _id: programId })), // Update programs field
+      },
+      { new: true }
     );
 
     if (!updatedUnit) {
@@ -98,7 +128,8 @@ const updateUnit = async (req, res) => {
     console.error("Error updating unit:", error.message);
     res.status(500).json({ message: "Internal server error" });
   }
-}
+};
+
 
 // Delete unit by ID
 const deleteUnit = asyncHandler(async (req, res) => {

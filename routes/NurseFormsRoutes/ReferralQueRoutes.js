@@ -9,7 +9,7 @@ const {
     getFormByAssignmentId,
     updateFormByAssignmentId,
     deleteFormByAssignmentId,
-} = require("../../controllers/NurseFormsControllers/ConfidentialInfoController");
+} = require("../../controllers/NurseFormsControllers/ReferralQueController.js");
 
 // this routes will be used in frontend
 router.post("/", createForm);
@@ -21,6 +21,12 @@ router.delete("/assignment/:assignmentId", deleteFormByAssignmentId);
 // for postman testing only
 router.get("/:id", getFormById);
 router.delete("/:id", deleteForm);
-// router.put("/:id", updateForm);
+router.put("/:id", updateForm);
 
 module.exports = router;
+
+
+// app.post('/api/incident-hha', upload.single('diagramIndicatingInjury'), createForm);
+
+
+// ...

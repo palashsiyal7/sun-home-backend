@@ -1,51 +1,51 @@
 const asyncHandler = require("express-async-handler");
-const EmergencyPhoneFormModel = require("../../models/NurseFormsModels/EmergencyPhoneModel");
-const formatDate = require("../../utils/formatDate");
+const ReferralQuestionnaire = require("../../models/NurseFormsModels/referralQueModel.js");
+const formatDate = require("../../utils/formatDate.js");
 
-// Create Emergency phoneNumber Info
+// Create referral Quetioannaire Info
 const createForm = asyncHandler(async (req, res) => {
   try {
     const formattedBody = { ...req.body };
-    ["homeSafetyEvaluationDate"].forEach((field) => {
+    ["referralDate", "dob"].forEach((field) => {
       if (formattedBody[field]) {
         formattedBody[field] = formatDate(formattedBody[field]);
       }
     });
-    const emergencyPhoneInfo = new EmergencyPhoneFormModel(formattedBody);
+    const referralFormInfo = new ReferralQuestionnaire(formattedBody);
 
-    // const emergencyPhoneInfo = new EmergencyPhoneFormModel(req.body);
-    const createdemergencyPhoneInfo = await emergencyPhoneInfo.save();
-    res.status(200).json(createdemergencyPhoneInfo);
+    // const referralFormInfo = new ReferralQuestionnaire(req.body);
+    const createdreferralFormInfo = await referralFormInfo.save();
+    res.status(200).json(createdreferralFormInfo);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 });
 
-// Get All Emergency phoneNumber Infos
+// Get All referral Quetioannaire Infos
 const getAllForms = asyncHandler(async (req, res) => {
   try {
-    const emergencyPhoneInfos = await EmergencyPhoneFormModel.find({});
-    res.status(200).json(emergencyPhoneInfos);
+    const referralFormInfos = await ReferralQuestionnaire.find({});
+    res.status(200).json(referralFormInfos);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 });
 
-// Get Emergency phoneNumber Info by ID
+// Get referral Quetioannaire Info by ID
 const getFormById = asyncHandler(async (req, res) => {
-  const emergencyPhoneInfo = await EmergencyPhoneFormModel.findById(req.params.id);
+  const referralFormInfo = await ReferralQuestionnaire.findById(req.params.id);
 
-  if (emergencyPhoneInfo) {
-    res.status(200).json(emergencyPhoneInfo);
+  if (referralFormInfo) {
+    res.status(200).json(referralFormInfo);
   } else {
-    res.status(404).json({ message: "Emergency phoneNumber info not found" });
+    res.status(404).json({ message: "referral Quetioannaire info not found" });
   }
 });
 
-// Update Emergency phoneNumber Info
+// Update referral Quetioannaire Info
 const updateForm = asyncHandler(async (req, res) => {
   try {
-    const patientEmergencyInfo = await EmergencyPhoneFormModel.findById(req.params.id);
+    const patientEmergencyInfo = await ReferralQuestionnaire.findById(req.params.id);
     if (patientEmergencyInfo) {
       // Update the entire patientEmergencyInfo object with req.body
       Object.assign(patientEmergencyInfo, req.body);
@@ -59,36 +59,36 @@ const updateForm = asyncHandler(async (req, res) => {
   }
 });
 
-// Delete Emergency phoneNumber Info
+// Delete referral Quetioannaire Info
 const deleteForm = asyncHandler(async (req, res) => {
   try {
-    const emergencyPhoneInfo = await EmergencyPhoneFormModel.findById(req.params.id);
+    const referralFormInfo = await ReferralQuestionnaire.findById(req.params.id);
 
-    if (emergencyPhoneInfo) {
-      // await emergencyPhoneInfo.remove();
-      await emergencyPhoneInfo.deleteOne({ _id: req.params.id });
+    if (referralFormInfo) {
+      // await referralFormInfo.remove();
+      await referralFormInfo.deleteOne({ _id: req.params.id });
 
-      res.status(200).json({ message: "Emergency phoneNumber info removed" });
+      res.status(200).json({ message: "referral Quetioannaire info removed" });
     } else {
-      res.status(404).json({ message: "Emergency phoneNumber info not found" });
+      res.status(404).json({ message: "referral Quetioannaire info not found" });
     }
   } catch(error) {
     res.status(500).json({ message: error.message });
   }
 });
 
-// Get Emergency phoneNumber Info by assignmentId
+// Get referral Quetioannaire Info by assignmentId
 const getFormByAssignmentId = asyncHandler(async (req, res) => {
   try {
-    const emergencyPhoneInfo = await EmergencyPhoneFormModel.findOne({
+    const referralFormInfo = await ReferralQuestionnaire.findOne({
       assignmentId: req.params.assignmentId,
     });
 
-    if (emergencyPhoneInfo) {
-      res.status(200).json(emergencyPhoneInfo);
+    if (referralFormInfo) {
+      res.status(200).json(referralFormInfo);
     } else {
       res.status(404).json({
-        message: "Emergency phoneNumber info with given assignmentId not found",
+        message: "referral Quetioannaire info with given assignmentId not found",
       });
     }
   } catch (error) {
@@ -96,51 +96,51 @@ const getFormByAssignmentId = asyncHandler(async (req, res) => {
   }
 });
 
-// Update Emergency phoneNumber Info by assignmentId
+// Update referral Quetioannaire Info by assignmentId
 const updateFormByAssignmentId = asyncHandler(async (req, res) => {
   try {
-    const assignmentId = req.params.assignmentId;
+    const assignmentId = req.params.id;
     console.log(
       "updateFormByAssignmentId-confidential-info-Controller api hit"
     , assignmentId);
     console.log(req.body);
 
-    const emergecyPhoneData = await EmergencyPhoneFormModel.findOne({ assignmentId });
+    const emergecyPhoneData = await ReferralQuestionnaire.findOne({ assignmentId });
 
     if (!emergecyPhoneData) {
       res.status(404);
       throw new Error("not form found on this assignment id");
     }
     // Make sure to use the $set operator to specify the fields to update
-    const updatedemergencyPhoneInfo = await EmergencyPhoneFormModel.findOneAndUpdate(
+    const updatedreferralFormInfo = await ReferralQuestionnaire.findOneAndUpdate(
       { assignmentId }, // Filter by assignmentId
       req.body, // Use $set to update the document fields with req.body
       { new: true } // Return the updated document and run validators
     );
-    console.log(updatedemergencyPhoneInfo);
-    res.status(200).json(updatedemergencyPhoneInfo);
+    console.log(updatedreferralFormInfo);
+    res.status(200).json(updatedreferralFormInfo);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 });
 
-// Delete Emergency phoneNumber Info by assignmentId
+// Delete referral Quetioannaire Info by assignmentId
 const deleteFormByAssignmentId = asyncHandler(async (req, res) => {
   try {
-    const emergencyPhoneInfo = await EmergencyPhoneFormModel.findOne({
+    const referralFormInfo = await ReferralQuestionnaire.findOne({
       assignmentId: req.params.assignmentId,
     });
-    if (emergencyPhoneInfo) {
-      await emergencyPhoneInfo.deleteOne({
+    if (referralFormInfo) {
+      await referralFormInfo.deleteOne({
         assignmentId: req.params.assignmentId,
       });
-      // await emergencyPhoneInfo.remove();
+      // await referralFormInfo.remove();
       res
         .status(200)
-        .json({ message: "Emergency phoneNumber info with given assignmentId removed" });
+        .json({ message: "referral Quetioannaire info with given assignmentId removed" });
     } else {
       res.status(404).json({
-        message: "Emergency phoneNumber info with given assignmentId not found",
+        message: "referral Quetioannaire info with given assignmentId not found",
       });
     }
   } catch (error) {

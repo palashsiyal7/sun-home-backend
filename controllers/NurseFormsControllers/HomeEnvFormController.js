@@ -2,41 +2,40 @@ const asyncHandler = require("express-async-handler");
 const HomeEnvFormModel = require("../../models/NurseFormsModels/HomeEnvModel");
 const formatDate = require("../../utils/formatDate");
 
-// Helper function to convert date strings from dd/mm/yyyy to Date objects
-const convertToDateObject = (dateString) => {
-  const parts = dateString.split("/");
-  const day = parseInt(parts[0], 10);
-  const month = parseInt(parts[1], 10) - 1; // JS months are 0-based
-  const year = parseInt(parts[2], 10);
-  return new Date(year, month, day);
-};
-
-// Function to recursively convert all date strings in an object
-const convertAllDates = (obj) => {
-  for (const key in obj) {
-    if (typeof obj[key] === "object" && obj[key] !== null) {
-      // Recurse into sub-objects
-      convertAllDates(obj[key]);
-    } else if (key === "dateInstructed" || key === "signatureDate") {
-      // Convert date strings to Date objects
-      obj[key] = convertToDateObject(obj[key]);
-    }
-  }
-};
-
 const createForm = asyncHandler(async (req, res) => {
   try {
+
+    console.log(req.body)
     // Deep copy req.body to avoid mutating the original request object
-    const formData = JSON.parse(JSON.stringify(req.body));
-    // Convert all date strings to Date objects
-    convertAllDates(formData);
-    const homeEnvFormInfo = new HomeEnvFormModel(formData);
-    const createdhomeEnvFormInfo = await homeEnvFormInfo.save();
-    res.status(200).json(createdhomeEnvFormInfo);
+    const formattedBody = JSON.parse(JSON.stringify(req.body));
+
+    // Format top-level date fields
+    ["dateInstructed", "signatureDate", "dateSigned"].forEach(field => {
+      if (formattedBody[field]) {
+        formattedBody[field] = formatDate(formattedBody[field]);
+      }
+    });
+
+    // Format nested 'dateInstructed' fields within 'ifNoSpecifyDocument'
+    if (formattedBody.ifNoSpecifyDocument && Array.isArray(formattedBody.ifNoSpecifyDocument)) {
+      formattedBody.ifNoSpecifyDocument = formattedBody.ifNoSpecifyDocument.map(doc => {
+        if (doc.dateInstructed) {
+          return {
+            ...doc,
+            dateInstructed: formatDate(doc.dateInstructed)
+          };
+        }
+        return doc;
+      });
+    }
+
+    const newForm = await HomeEnvFormModel.create(formattedBody);
+    res.status(200).json(newForm);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 });
+
 
 // Get All Home environmental Infos
 const getAllForms = asyncHandler(async (req, res) => {
@@ -117,7 +116,7 @@ const updateFormByAssignmentId = asyncHandler(async (req, res) => {
     // console.log(
     //   "updateFormByAssignmentId-home-environmental-info-Controller api hit"
     // );
-    // console.log(req.body);
+    console.log(req.body);
     const homeEnvData = await HomeEnvFormModel.findOne({ assignmentId });
     if (!homeEnvData) {
       res.status(404);
@@ -148,11 +147,9 @@ const deleteFormByAssignmentId = asyncHandler(async (req, res) => {
         assignmentId: req.params.assignmentId,
       });
       // await homeEnvFormInfo.remove();
-      res
-        .status(200)
-        .json({
-          message: "Home environmental info with given assignmentId removed",
-        });
+      res.status(200).json({
+        message: "Home environmental info with given assignmentId removed",
+      });
     } else {
       res.status(404).json({
         message: "Home environmental info with given assignmentId not found",

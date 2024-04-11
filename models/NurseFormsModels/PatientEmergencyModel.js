@@ -53,10 +53,6 @@ const patientEmergencySchema = new mongoose.Schema({
   ifYesForDailyorFrequentServices: {
     type: String,
   },
-//   oxygenDependent: {
-//     type: Boolean,
-//     required: [false, "Oxygen dependency is required"],
-//   },
   oxygenFlowRate: {
     type: Number,
     required: [false, "Oxygen flow rate is required if patient is oxygen dependent"],
@@ -121,8 +117,6 @@ const patientEmergencySchema = new mongoose.Schema({
     required: [false, "Information on self-administered medications is required"],
   },
 
-
-
   walker: Boolean,
   wheelchair: Boolean,
   hearingImpairment: Boolean,
@@ -157,6 +151,8 @@ const patientEmergencySchema = new mongoose.Schema({
   foodSupplyFor3D: Boolean,
   batteryOperatedRadio: Boolean,
   flashLight: Boolean,
+  other: Boolean,
+
   otherSpecify: String,
   recieptOfHomeSafety: Boolean,
   ifYesForRecieptOfHomeSafety: Date,
@@ -185,14 +181,6 @@ const patientEmergencySchema = new mongoose.Schema({
     type: String,
     required: [false, "Evacuation contact name is required if evacuation is necessary"],
   },
-
-  //-----
-  // evacuationContactPhone: {
-  //   type: String,
-  //   required: [false, "Evacuation contact phone number is required if evacuation is necessary"],
-  // },
-  //--------
-  
   nextTOKinName: String,
 
   hospitalOfChoiceName: {

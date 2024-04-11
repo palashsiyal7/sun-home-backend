@@ -12,7 +12,7 @@ router.get("/", quickAssessmentController.getAllQuickAssessments);
 router.get("/:id", quickAssessmentController.getQuickAssessmentById);
 
 // Update Quick Assessment by ID
-router.patch("/:id", quickAssessmentController.updateQuickAssessment);
+router.put("/:id", quickAssessmentController.updateQuickAssessment);
 
 // Delete Quick Assessment by ID
 router.delete("/:id", quickAssessmentController.deleteQuickAssessment);
@@ -21,7 +21,7 @@ router.delete("/:id", quickAssessmentController.deleteQuickAssessment);
 router.get("/assignment/:assignmentId", quickAssessmentController.getQuickAssessmentByAssignmentId);
 
 // Update Quick Assessment by Assignment ID
-router.patch("/assignment/:assignmentId", quickAssessmentController.updateQuickAssessmentByAssignmentId);
+router.put("/assignment/:assignmentId", quickAssessmentController.updateQuickAssessmentByAssignmentId);
 
 // Delete Quick Assessment by Assignment ID
 router.delete("/assignment/:assignmentId", quickAssessmentController.deleteQuickAssessmentByAssignmentId);

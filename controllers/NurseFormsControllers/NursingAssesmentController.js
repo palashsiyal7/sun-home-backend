@@ -1,6 +1,6 @@
 const asyncHandler = require("express-async-handler");
 const NursingAssesmentModel = require("../../models/NurseFormsModels/NursingAssesmentModel.js");
-const formatDate = require("../../utils/formatDate");
+const formatDate = require("../../utils/formatDate.js");
 
 // Create Emergency phoneNumber Info
 const createForm = asyncHandler(async (req, res) => {
