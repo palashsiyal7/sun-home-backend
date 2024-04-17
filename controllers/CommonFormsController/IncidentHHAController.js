@@ -120,7 +120,7 @@ const getIncidentHHAImage = async (req, res) => {
   console.log('API hit 1');
   try {
     const { imagePath } = req.params;
-    console.log('API hit 2');
+    console.log('API hit 2', imagePath);
     const fileName = decodeURIComponent(imagePath);
     console.log('API hit 3');
     // Move up one directory to get out of 'controllers' and then into 'uploads'
