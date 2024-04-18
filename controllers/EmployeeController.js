@@ -45,7 +45,14 @@ const getEmployeeById = asyncHandler(async (req, res) => {
     // const employee = await Employee.findById(employeeId).select({ password: 0 }).populate("timeSlots")
       // .populate("company");
 ;
-    const employee = await Employee.findById(employeeId).populate("timeSlots")
+    const employee = await Employee.findById(employeeId)
+    .populate("mondayTimeSlots")
+    .populate("sundayTimeSlots")
+    .populate("tuesdayTimeSlots")
+    .populate("wednesdayTimeSlots")
+    .populate("thursdayTimeSlots")
+    .populate("fridayTimeSlots")
+    .populate("saturdayTimeSlots")
       .populate("company");
 ;
     // Exclude the password field from the response
@@ -551,11 +558,12 @@ const updateEmployee = async (req, res) => {
 
 
 const getEmployeeForProfilePage = asyncHandler(async (req, res) => {
+  console.log('api hit ')
   const { id } = req.params;
   try {
     const employee = await Employee.findById(id)
-      .select('name email phoneNumber address image sundayTimeSlots mondayTimeSlots tuesdayTimeSlots wednesdayTimeSlots thursdayTimeSlots fridayTimeSlots saturdayTimeSlots')
-      .populate('sundayTimeSlots mondayTimeSlots tuesdayTimeSlots wednesdayTimeSlots thursdayTimeSlots fridayTimeSlots saturdayTimeSlots');
+      .select('name company email phoneNumber address image sundayTimeSlots mondayTimeSlots tuesdayTimeSlots wednesdayTimeSlots thursdayTimeSlots fridayTimeSlots saturdayTimeSlots')
+      .populate('company sundayTimeSlots mondayTimeSlots tuesdayTimeSlots wednesdayTimeSlots thursdayTimeSlots fridayTimeSlots saturdayTimeSlots');
 
     if (!employee) {
       return res.status(404).json({ message: "Employee not found" });
@@ -569,6 +577,7 @@ const getEmployeeForProfilePage = asyncHandler(async (req, res) => {
       phoneNumber: employee.phoneNumber,
       address: employee.address,
       image: employee.image,
+      company: employee.company,
       sundayTimeSlots: employee.sundayTimeSlots,
       mondayTimeSlots: employee.mondayTimeSlots,
       tuesdayTimeSlots: employee.tuesdayTimeSlots,
